@@ -25,7 +25,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
 
 
-    @stack('styles')
+    @stack("styles")
 </head>
 
 <body class="body">
@@ -93,7 +93,7 @@
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="brands.html" class="">
+                                            <a href="{{ route('admin.brands') }}" class="">
                                                 <div class="text">Brands</div>
                                             </a>
                                         </li>
@@ -476,12 +476,12 @@
         </div>
     </div>
 
-    <script src="{{ asset('s/jquery.min.js') }}"></script>
-    <script src="{{ asset('s/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('s/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('s/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('s/apexcharts/apexcharts.js') }}"></script>
-    <script src="{{ asset('s/main.js') }}"></script>
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/apexcharts/apexcharts.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
     <script>
         (function($) {
 
@@ -591,7 +591,7 @@
             jQuery(window).on("resize", function() {});
         })(jQuery);
     </script>
-    @stack('scripts')
+    @stack("scripts")
 </body>
 
 

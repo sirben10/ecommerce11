@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-    @stack('styles')
+    @stack("styles")
 </head>
 
 <body class="gradient-bg">
@@ -483,7 +483,8 @@
                         </div>
                     @else{
                         <div class="header-tools__item hover-container">
-                            <a href="{{ Auth::user()->utype === 'ADM' ? route('admin.index'): route('user.index') }}" class="header-tools__item">
+                            <a href="{{ Auth::user()->utype === 'ADM' ? route('admin.index') : route('user.index') }}"
+                                class="header-tools__item">
                                 <span class="pr-6px">{{ Auth::user()->name }}</span>
                                 <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -512,7 +513,8 @@
             </div>
         </div>
     </header>
-    @yield('content')
+
+    @yield("content")
 
 
     <hr class="mt-5 text-secondary" />
@@ -661,7 +663,8 @@
     <footer class="footer-mobile container w-100 px-5 d-md-none bg-body">
         <div class="row text-center">
             <div class="col-4">
-                <a href="{{ route('home.index') }}" class="footer-mobile__link d-flex flex-column align-items-center">
+                <a href="{{ route('home.index') }}"
+                    class="footer-mobile__link d-flex flex-column align-items-center">
                     <svg class="d-block" width="18" height="18" viewBox="0 0 18 18" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_home" />
@@ -671,7 +674,8 @@
             </div>
 
             <div class="col-4">
-                <a href="{{ route('home.index') }}" class="footer-mobile__link d-flex flex-column align-items-center">
+                <a href="{{ route('home.index') }}"
+                    class="footer-mobile__link d-flex flex-column align-items-center">
                     <svg class="d-block" width="18" height="18" viewBox="0 0 18 18" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_hanger" />
@@ -681,7 +685,8 @@
             </div>
 
             <div class="col-4">
-                <a href="{{ route('home.index') }}" class="footer-mobile__link d-flex flex-column align-items-center">
+                <a href="{{ route('home.index') }}"
+                    class="footer-mobile__link d-flex flex-column align-items-center">
                     <div class="position-relative">
                         <svg class="d-block" width="18" height="18" viewBox="0 0 20 20" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -704,7 +709,8 @@
     <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
     <script src="{{ asset('assets/js/theme.js') }}"></script>
-    @stack('scripts')
+
+    @stack("scripts")
 </body>
 
 </html>

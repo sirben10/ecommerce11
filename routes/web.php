@@ -11,10 +11,18 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
+// Login Groups
+// User Login
 Route::middleware('auth')->group(function(){
     Route::get('/acount-dashboard', [UserController::class, 'index'])->name('user.index');
 });
 
+// Admin Login and rights
 Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+
+    // Brand Route
+    Route::get('/admin/brands', [AdminController::class, 'brands'])->name('admin.brands');
 });
+// End Login Groups
+
