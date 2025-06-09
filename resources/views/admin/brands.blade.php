@@ -1,7 +1,5 @@
  @extends('layouts.admin')
  @section('content')
-     <div class="main-content">
-
          <div class="main-content-inner">
              <div class="main-content-wrap">
                  <div class="flex items-center flex-wrap justify-between gap20 mb-27">
@@ -49,51 +47,45 @@
                                      </tr>
                                  </thead>
                                  <tbody>
-                                    @foreach ($brands as $brand)
-
-                                    <tr>
-                                        <td>{{ $brand->id }}</td>
-                                        <td class="pname">
-                                            <div class="image">
-                                                <img src="{{ asset('uploads/brands') }}/{{ $brand->image }}" alt="{{ $brand->name }}" class="image">
-                                            </div>
-                                            <div class="name">
-                                                <a href="#" class="body-title-2">{{ $Brand->name }}</a>
-                                            </div>
-                                        </td>
-                                        <td>{{ $brand->slug }}</td>
-                                        <td><a href="#" target="_blank">0</a></td>
-                                        <td>
-                                            <div class="list-icon-function">
-                                                <a href="#">
-                                                    <div class="item edit">
-                                                        <i class="icon-edit-3"></i>
-                                                    </div>
-                                                </a>
-                                                <form action="#" method="POST">
-                                                    <div class="item text-danger delete">
-                                                        <i class="icon-trash-2"></i>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                     @foreach ($brands as $brand)
+                                         <tr>
+                                             <td>{{ $brand->id }}</td>
+                                             <td class="pname">
+                                                 <div class="image">
+                                                     <img src="{{ asset('uploads/brands') }}/{{ $brand->image }}"
+                                                         alt="{{ $brand->name }}" class="image">
+                                                 </div>
+                                                 <div class="name">
+                                                     <a href="#" class="body-title-2">{{ $Brand->name }}</a>
+                                                 </div>
+                                             </td>
+                                             <td>{{ $brand->slug }}</td>
+                                             <td><a href="#" target="_blank">0</a></td>
+                                             <td>
+                                                 <div class="list-icon-function">
+                                                     <a href="#">
+                                                         <div class="item edit">
+                                                             <i class="icon-edit-3"></i>
+                                                         </div>
+                                                     </a>
+                                                     <form action="#" method="POST">
+                                                         <div class="item text-danger delete">
+                                                             <i class="icon-trash-2"></i>
+                                                         </div>
+                                                     </form>
+                                                 </div>
+                                             </td>
+                                         </tr>
+                                     @endforeach
                                  </tbody>
                              </table>
                          </div>
                          <div class="divider"></div>
                          <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
-                                {{ $brands->links('pagination::bootstrap-5') }}
+                             {{ $brands->links('pagination::bootstrap-5') }}
                          </div>
                      </div>
                  </div>
              </div>
          </div>
-
-
-         <div class="bottom-page">
-             <div class="body-text">Copyright © 2024 SurfsideMedia</div>
-         </div>
-     </div>
  @endsection
