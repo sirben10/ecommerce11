@@ -23,6 +23,11 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
 
     // Brand Route
     Route::get('/admin/brands', [AdminController::class, 'brands'])->name('admin.brands');
+
+    // Add Brand Route
+    Route::get('/admin/brand/add', [AdminController::class, 'add_brand'])->name('admin.add-brand');
+
+    Route::post('/admin/brand/store', [AdminController::class, 'brand_store'])->name('admin.brandstore');
 });
 // End Login Groups
 

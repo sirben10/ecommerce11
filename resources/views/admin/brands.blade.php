@@ -32,10 +32,13 @@
                                  </div>
                              </form>
                          </div>
-                         <a class="tf-button style-1 w208" href="add-brand.html"><i class="icon-plus"></i>Add new</a>
+                         <a class="tf-button style-1 w208" href="{{ route('admin.add-brand') }}"><i class="icon-plus"></i>Add new</a>
                      </div>
                      <div class="wg-table table-all-user">
                          <div class="table-responsive">
+                            @if (session::has('status'))
+                                <p class="alert alert-success">{{ session::get('status') }}</p>
+                            @endif
                              <table class="table table-striped table-bordered">
                                  <thead>
                                      <tr>
