@@ -36,8 +36,8 @@
                      </div>
                      <div class="wg-table table-all-user">
                          <div class="table-responsive">
-                            @if (session::has('status'))
-                                <p class="alert alert-success">{{ session::get('status') }}</p>
+                            @if(Session::has('status'))
+                                <p class="alert alert-success">{{ Session::get('status') }}</p>
                             @endif
                              <table class="table table-striped table-bordered">
                                  <thead>
@@ -59,14 +59,14 @@
                                                          alt="{{ $brand->name }}" class="image">
                                                  </div>
                                                  <div class="name">
-                                                     <a href="#" class="body-title-2">{{ $Brand->name }}</a>
+                                                     <a href="#" class="body-title-2">{{ $brand->name }}</a>
                                                  </div>
                                              </td>
                                              <td>{{ $brand->slug }}</td>
                                              <td><a href="#" target="_blank">0</a></td>
                                              <td>
                                                  <div class="list-icon-function">
-                                                     <a href="#">
+                                                     <a href="{{ route('admin.edit-brand',['id'=>$brand->id]) }}">
                                                          <div class="item edit">
                                                              <i class="icon-edit-3"></i>
                                                          </div>

@@ -5,7 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Auth;
-use illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
+// use App\Http\Controllers\Session;
 
 Auth::routes();
 
@@ -28,6 +29,9 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/brand/add', [AdminController::class, 'add_brand'])->name('admin.add-brand');
 
     Route::post('/admin/brand/store', [AdminController::class, 'brand_store'])->name('admin.brandstore');
+    // Edit Brand
+    Route::get('/admin/brand/edit/{id}', [AdminController::class, 'edit_brand'])->name('admin.edit-brand');
+    Route::put('/admin/brand/update', [AdminController::class, 'brand_update'])->name('admin.update-brand');
 });
 // End Login Groups
 
