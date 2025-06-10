@@ -35,43 +35,42 @@ class AdminController extends Controller
 
 
 
-        $request->validate([
-            'name' => 'required',
-            'slug' => 'required|unique:brands,slug',
-            'image' => 'mimes:png,jpg,jpeg|max:2048'
-        ]);
-
-
-        $newImageName =  time() . '-' . $request->slug . '.'
-            . $request->image->extension();
-
-
-        $brand = Brand::create([
-            'name' => $request->input('name'),
-            'slug' => $request->input('slug'),
-            'image' => $newImageName,
-        ]);
-        $request->image->move(public_path('uploads/brands'), $newImageName);
-
-        return redirect('admin/brands')->with('status','Brand has been added successfully', );
-
         // $request->validate([
         //     'name' => 'required',
         //     'slug' => 'required|unique:brands,slug',
         //     'image' => 'mimes:png,jpg,jpeg|max:2048'
         // ]);
-        // $brand = new Brand();
-        // $brand->name = $request->name;
-        // $brand->slug = Str::slug($request->slug);
-        // $image = $request->file('image');
-        // $file_extension = $request->file('image')->extension();
-        // $file_name = Carbon::now()->timestamp.'.'.$file_extension;
-        // $this->GenerateBrandThumbnailImage($image, $file_name);
-        // $brand->image = $file_name;
-        // $brand->save();
 
-        // return redirect()->route('admin.brands')->with('status', 'Brand has been added sussfuly');
 
+        // $newImageName =  time() . '-' . $request->slug . '.'
+        //     . $request->image->extension();
+
+
+        // $brand = Brand::create([
+        //     'name' => $request->input('name'),
+        //     'slug' => $request->input('slug'),
+        //     'image' => $newImageName,
+        // ]);
+        // $request->image->move(public_path('uploads/brands'), $newImageName);
+
+        // return redirect('admin/brands')->with('status','Brand has been added successfully', );
+
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:brands,slug',
+            'image' => 'mimes:png,jpg,jpeg|max:2048'
+        ]);
+        $brand = new Brand();
+        $brand->name = $request->name;
+        $brand->slug = Str::slug($request->slug);
+        $image = $request->file('image');
+        $file_extension = $request->file('image')->extension();
+        $file_name = Carbon::now()->timestamp . '.' . $file_extension;
+        $this->GenerateBrandThumbnailImage($image, $file_name);
+        $brand->image = $file_name;
+        $brand->save();
+
+        return redirect()->route('admin.brands')->with('status', 'Brand has been added sussfuly');
     }
 
     public function edit_brand($id)
@@ -82,9 +81,9 @@ class AdminController extends Controller
 
     public function brand_update(Request $request)
     {
-         $request->validate([
+        $request->validate([
             'name' => 'required',
-            'slug' => 'required|unique:brands,slug,'.$request->id,
+            'slug' => 'required|unique:brands,slug,' . $request->id,
             'image' => 'mimes:png,jpg,jpeg|max:2048'
         ]);
 
@@ -92,12 +91,12 @@ class AdminController extends Controller
         $brand->name = $request->name;
         $brand->slug = Str::slug($request->slug);
         if ($request->hasFile('image')) {
-            if (File::exists(public_path('uploads/brands').'/'.$brand->image)) {
-                File::delete(public_path('uploads/brands').'/'.$brand->image);
+            if (File::exists(public_path('uploads/brands') . '/' . $brand->image)) {
+                File::delete(public_path('uploads/brands') . '/' . $brand->image);
             }
             $image = $request->file('image');
             $file_extension = $request->file('image')->extension();
-            $file_name = Carbon::now()->timestamp.'.'.$file_extension;
+            $file_name = Carbon::now()->timestamp . '.' . $file_extension;
             $this->GenerateBrandThumbnailImage($image, $file_name);
             $brand->image = $file_name;
         }
@@ -105,10 +104,7 @@ class AdminController extends Controller
         $brand->save();
 
         return redirect()->route('admin.brands')->with('status', 'Brand has been Updated successfully');
-
-
-
-     }
+    }
 
     public function GenerateBrandThumbnailImage($image, $imageName)
     {
@@ -125,18 +121,48 @@ class AdminController extends Controller
     public function delete_brand($id)
     {
         $brand = Brand::find($id);
-            if (File::exists(public_path('uploads/brands').'/'.$brand->image)) {
-             File::delete(public_path('uploads/brands').'/'.$brand->image);
-
+        if (File::exists(public_path('uploads/brands') . '/' . $brand->image)) {
+            File::delete(public_path('uploads/brands') . '/' . $brand->image);
         }
         $brand->delete();
-         return redirect('admin/brands')->with('status','Brand has been deleted successfully', );
-
+        return redirect('admin/brands')->with('status', 'Brand has been deleted successfully',);
     }
 
-    Public function categories()
+    // CATEGORIES
+    // LIST
+    public function categories()
     {
         $categories = Category::orderBy('id', 'DESC')->paginate(10);
         return view('admin.categories', compact('categories'));
+    }
+
+    // ADD
+    public function add_category()
+    {
+        return view('admin.new-category');
+    }
+    // STORE
+    public function store_category(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:categories,slug',
+            'image' => 'mimes:png,jpg,jpeg|max:2048'
+        ]);
+
+
+        $newImageName =  time() . '-' . $request->slug . '.'
+            . $request->image->extension();
+
+
+        $category = Category::create([
+            'name' => $request->input('name'),
+            'slug' => $request->input('slug'),
+            'image' => $newImageName,
+        ]);
+        $request->image->move(public_path('uploads/categories'), $newImageName);
+
+        return redirect('admin/categories')->with('status', 'Category has been added successfully',);
     }
 }

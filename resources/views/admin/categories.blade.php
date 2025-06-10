@@ -32,7 +32,7 @@
                                  </div>
                              </form>
                          </div>
-                         <a class="tf-button style-1 w208" href="#"><i class="icon-plus"></i>Add new</a>
+                         <a class="tf-button style-1 w208" href="{{route('admin.new-category')}}"><i class="icon-plus"></i>Add new</a>
                      </div>
                      <div class="wg-table table-all-user">
                          <div class="table-responsive">
