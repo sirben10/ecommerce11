@@ -35,6 +35,8 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
 
 //    Delete Brand Route
     Route::delete('/admin/brand/{id}/delete', [AdminController::class, 'delete_brand'])->name('admin.delete-brand');
+//    Category Route
+    Route::get('/admin/categories', [AdminController::class, 'categories'])->name( 'admin.categories');
 });
 // End Login Groups
 
