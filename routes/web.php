@@ -38,16 +38,20 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
 
     //    Category Route
     Route::get('/admin/categories', [AdminController::class, 'categories'])->name( 'admin.categories');
-//   New Category Route
+    //   New Category Route
     Route::get('/admin/category/add', [AdminController::class, 'add_category'])->name( 'admin.new-category');
-//   Store Category Route
+    //   Store Category Route
     Route::post('/admin/category/store', [AdminController::class, 'store_category'])->name( 'admin.store-category');
-//   Edit Category Route
+    //   Edit Category Route
     Route::get('/admin/category/{id}/edit', [AdminController::class, 'edit_category'])->name( 'admin.edit-category');
-//   Update Category Route
+    //   Update Category Route
     Route::put('/admin/category/update', [AdminController::class, 'update_category'])->name( 'admin.update-category');
-//   Delete Category Route
+    //   Delete Category Route
     Route::delete('/admin/category/{id}/delete', [AdminController::class, 'delete_category'])->name( 'admin.delete-category');
+
+    // Products Route
+    Route::get('/admin/products', [AdminController::class, 'products'])->name( 'admin.products');
+
 });
 // End Login Groups
 
