@@ -33,7 +33,6 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/brand/edit/{id}', [AdminController::class, 'edit_brand'])->name('admin.edit-brand');
     // Update Brand
     Route::put('/admin/brand/update', [AdminController::class, 'brand_update'])->name('admin.update-brand');
-
 //    Delete Brand Route
     Route::delete('/admin/brand/{id}/delete', [AdminController::class, 'delete_brand'])->name('admin.delete-brand');
 
@@ -47,6 +46,8 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/category/{id}/edit', [AdminController::class, 'edit_category'])->name( 'admin.edit-category');
 //   Update Category Route
     Route::put('/admin/category/update', [AdminController::class, 'update_category'])->name( 'admin.update-category');
+//   Delete Category Route
+    Route::delete('/admin/category/{id}/delete', [AdminController::class, 'delete_category'])->name( 'admin.delete-category');
 });
 // End Login Groups
 

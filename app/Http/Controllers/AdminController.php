@@ -217,4 +217,22 @@ class AdminController extends Controller
             return redirect('admin/categories')->with('status', 'Category has been updated successfully',);
         }
     }
+        // Delete Category
+
+    public function delete_category($id)
+    {
+        // dd($id);
+        $category = Category::find($id);
+        if (File::exists(public_path('uploads/categories') . '/' . $category->image)) {
+            File::delete(public_path('uploads/categories') . '/' . $category->image);
+        }
+        $category->delete();
+        return redirect('admin/categories')->with('status', 'Category has been deleted successfully',);
+        // $category = Category::find($id);
+        // if (File::exists(public_path('uploads/categories') . '/' . $category->image)) {
+        //     File::delete(public_path('uploads/categories') . '/' . $category->image);
+        // }
+        // $category->delete();
+        // return redirect('admin/categories')->with('status', 'Category has been deleted successfully!');
+    }
 }
