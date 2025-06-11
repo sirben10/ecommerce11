@@ -165,4 +165,56 @@ class AdminController extends Controller
 
         return redirect('admin/categories')->with('status', 'Category has been added successfully',);
     }
+    // Edit Category
+    public function edit_category($id)
+    {
+        // $car = Car::find($id)->first();
+
+        $category = Category::find($id);
+        return view('admin.edit-category')->with('category', $category);
+    }
+
+    // UPDATE Category
+    public function update_category(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:categories,slug,' . $request->id,
+            'image' => 'mimes:png,jpg,jpeg|max:2048'
+        ]);
+
+        if (!empty($request->file('image'))) {
+
+             $test = $request->file('image')->getClientOriginalName();
+            $test = str_replace(array('.', 'jpeg', 'PNG', 'png', 'jpg'), '', $test);
+
+            $newImageName =  'updated_' . $test . '.'
+                . $request->image->extension();
+        }
+
+
+        $category = Category::where('id', $request->id)
+            ->update([
+                'name' => $request->input('name'),
+                'slug' => $request->input('slug'),
+                // 'image' => $newImageName,
+            ]);
+            $findcategory = Category::find($request->id);
+            if (File::exists(public_path('uploads/categories') . '/' . $findcategory->image)) {
+                File::delete(public_path('uploads/categories') . '/' . $findcategory->image);
+            }
+        if (!empty($newImageName)) {
+            $category = Category::where('id', $request->id)
+                ->update([
+
+                    'image' => $newImageName
+
+                ]);
+
+            $request->image->move(public_path('uploads/categories'), $newImageName);
+
+            return redirect('admin/categories')->with('status', 'Category has been updated successfully',);
+        }
+    }
 }

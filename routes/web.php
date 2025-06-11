@@ -31,6 +31,7 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::post('/admin/brand/store', [AdminController::class, 'brand_store'])->name('admin.brandstore');
     // Edit Brand
     Route::get('/admin/brand/edit/{id}', [AdminController::class, 'edit_brand'])->name('admin.edit-brand');
+    // Update Brand
     Route::put('/admin/brand/update', [AdminController::class, 'brand_update'])->name('admin.update-brand');
 
 //    Delete Brand Route
@@ -39,9 +40,13 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     //    Category Route
     Route::get('/admin/categories', [AdminController::class, 'categories'])->name( 'admin.categories');
 //   New Category Route
-    Route::get('/admin/categories/add', [AdminController::class, 'add_category'])->name( 'admin.new-category');
+    Route::get('/admin/category/add', [AdminController::class, 'add_category'])->name( 'admin.new-category');
 //   Store Category Route
-    Route::post('/admin/categories/store', [AdminController::class, 'store_category'])->name( 'admin.store-category');
+    Route::post('/admin/category/store', [AdminController::class, 'store_category'])->name( 'admin.store-category');
+//   Edit Category Route
+    Route::get('/admin/category/{id}/edit', [AdminController::class, 'edit_category'])->name( 'admin.edit-category');
+//   Update Category Route
+    Route::put('/admin/category/update', [AdminController::class, 'update_category'])->name( 'admin.update-category');
 });
 // End Login Groups
 
