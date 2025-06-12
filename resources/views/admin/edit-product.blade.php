@@ -29,8 +29,10 @@
                 </ul>
             </div>
             <!-- form-add-product -->
-            <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data" action="">
+            <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data" action="{{ route('admin.product.update') }}">
                 @csrf
+                @method('PUT')
+                <input type="hidden" name="id" value="{{ $product->id }}"  />
                 <div class="wg-box">
                     <fieldset class="name">
                         <div class="body-title mb-10">Product name <span class="tf-color-1">*</span>
@@ -175,7 +177,7 @@
                         <fieldset class="name">
                             <div class="body-title mb-10">Regular Price <span class="tf-color-1">*</span></div>
                             <input class="mb-10" type="text" placeholder="Enter regular price" name="regular_price"
-                                tabindex="0" value="${{ number_format($product->regular_price,2) }}" aria-required="true"
+                                tabindex="0" value="{{ $product->regular_price }}" aria-required="true"
                                 required="">
                         </fieldset>
                         @error('regular_price')
@@ -184,7 +186,7 @@
                         <fieldset class="name">
                             <div class="body-title mb-10">Sale Price <span class="tf-color-1">*</span></div>
                             <input class="mb-10" type="text" placeholder="Enter sale price" name="sale_price"
-                                tabindex="0" value="${{ number_format($product->sale_price,2) }}" aria-required="true" required="">
+                                tabindex="0" value="{{ $product->sale_price }}" aria-required="true" required="">
                         </fieldset>
                         @error('sale_price')
                             <span class="alert alert-danger text-center">{{ $message }}</span>
@@ -242,7 +244,7 @@
                         @enderror
                     </div>
                     <div class="cols gap10">
-                        <button class="tf-button w-full" type="submit">Add product</button>
+                        <button class="tf-button w-full" type="submit">Update product</button>
                     </div>
                 </div>
             </form>

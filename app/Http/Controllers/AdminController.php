@@ -288,7 +288,7 @@ class AdminController extends Controller
         // Check if Single Product image is Added then Validate and Rename
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = $current_timestamp.'.'.$image->extension();
+            $imageName = $current_timestamp . '.' . $image->extension();
 
             // Call the GenerateProductThumbnailImage Path Funtion fpr the ImagePath
             $this->GenerateProductThumbnailImage($image, $imageName);
@@ -310,7 +310,7 @@ class AdminController extends Controller
                 $gextenssion = $file->getClientOriginalExtension();
                 $gcheck = in_array($gextenssion, $allowedFileExtession);
                 if ($gcheck) {
-                    $gfileName = $current_timestamp.'_'.$counter.'.'.$gextenssion;
+                    $gfileName = $current_timestamp . '_' . $counter . '.' . $gextenssion;
                     // Call GenerateProductThumbnailImage function for the Gallery Thumbnails Path
                     $this->GenerateProductThumbnailImage($file, $gfileName);
 
@@ -344,7 +344,7 @@ class AdminController extends Controller
         $img = Image::read($image->path());
 
         $img->cover(540, 689, "top");
-        $img->resize(540, 689, function($constraint) {
+        $img->resize(540, 689, function ($constraint) {
             $constraint->aspectRatio();
         })->save($destinationPath . '/' . $imageName);
 
@@ -353,16 +353,112 @@ class AdminController extends Controller
         })->save($destinationPathThumbnails . '/' . $imageName);
     }
 
-//    Edit Product
+    //    Edit Product
     public function edit_product($id)
     {
         $product = Product::find($id);
-         $categories = Category::select('id', 'name')->orderBy('name')->get();
-            // Fetch All Brands
-            $brands = Brand::select('id', 'name')->orderBy('name')->get();
+        $categories = Category::select('id', 'name')->orderBy('name')->get();
+        // Fetch All Brands
+        $brands = Brand::select('id', 'name')->orderBy('name')->get();
         return view('admin.edit-product', compact('product', 'categories', 'brands'));
-
     }
 
+    public function update_product(Request $request)
+    {
+        // Validate Input
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:products,slug,' . $request->id,
+            'description' => 'required',
+            'short_description' => 'required',
+            'regular_price' => 'required',
+            'sale_price' => 'required',
+            'SKU' => 'required',
+            'stock_status' => 'required',
+            'featured' => 'required',
+            'quantity' => 'required',
+            'image' => 'mimes:png,jpg,jpeg|max:2048',
+            'category_id' => 'required',
+            'brand_id' => 'required'
+        ]);
 
+        // Product Object
+        // Assign Values for the DB
+        $product = Product::find($request->id);
+        $product->name = $request->name;
+        $product->slug = Str::slug($request->name);
+        $product->desc = $request->description;
+        $product->short_desc = $request->short_description;
+        $product->regular_price = $request->regular_price;
+        $product->sale_price = $request->sale_price;
+        $product->SKU = $request->SKU;
+        $product->stock_status = $request->stock_status;
+        $product->featured = $request->featured;
+        $product->quantity = $request->quantity;
+        $product->category_id = $request->category_id;
+        $product->brand_id = $request->brand_id;
+
+        // Generate TimeStamp to name the Product Image and Gallery
+
+        $current_timestamp = Carbon::now()->timestamp;
+        // Check if Single Product image is Added then Validate and Rename
+        if ($request->hasFile('image')) {
+            if (File::exists(public_path('uploads/products') . '/' . $product->image)) {
+                File::delete(public_path('uploads/products') . '/' . $product->image);
+            }
+            if (File::exists(public_path('uploads/products/thumbnails') . '/' . $product->image)) {
+                File::delete(public_path('uploads/products/thumbnails') . '/' . $product->image);
+            }
+            $image = $request->file('image');
+            $imageName = $current_timestamp . '.' . $image->extension();
+
+            // Call the GenerateProductThumbnailImage Path Funtion fpr the ImagePath
+            $this->GenerateProductThumbnailImage($image, $imageName);
+            // Assign Image Values for the DB
+            $product->image = $imageName;
+        }
+
+        // Generate Array for Product Gallery
+        $gallery_arr = array();
+        // Set Gallery names to Empty
+        $gallery_images = "";
+        // Start Counter for the Gallery Array
+        $counter = 1;
+
+        if ($request->hasFile('images')) {
+            foreach (explode(',', $product->images) as $oldfile) {
+                if (File::exists(public_path('uploads/products') . '/' . $oldfile)) {
+                    File::delete(public_path('uploads/products') . '/' . $oldfile);
+                }
+                if (File::exists(public_path('uploads/products/thumbnails') . '/' . $oldfile)) {
+                    File::delete(public_path('uploads/products/thumbnails') . '/' . $oldfile);
+                }
+            }
+            $allowedFileExtession = ['jpg', 'png', 'jpeg'];
+            $files = $request->file('images');
+            foreach ($files as $file) {
+                $gextenssion = $file->getClientOriginalExtension();
+                $gcheck = in_array($gextenssion, $allowedFileExtession);
+                if ($gcheck) {
+                    $gfileName = $current_timestamp . '_' . $counter . '.' . $gextenssion;
+                    // Call GenerateProductThumbnailImage function for the Gallery Thumbnails Path
+                    $this->GenerateProductThumbnailImage($file, $gfileName);
+
+                    // Push each Gallery Image to the Array defined Above
+                    array_push($gallery_arr, $gfileName);
+                    // Increment the Image Counter as they are been Pushed
+                    $counter = $counter + 1;
+                }
+            }
+            // If all is passed, Get all images in array separates by Comma
+            $gallery_images = implode(',', $gallery_arr);
+            // The Assign GAllery Images Values for the DB
+            $product->images = $gallery_images;
+        }
+
+        // dd($product->images);
+        // And Save records to DB
+        $product->save();
+        return redirect()->route('admin.products')->with('status', 'Products has been Updated successfully');
+    }
 }
