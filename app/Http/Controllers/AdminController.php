@@ -353,55 +353,16 @@ class AdminController extends Controller
         })->save($destinationPathThumbnails . '/' . $imageName);
     }
 
-    //  public function store_product(Request $request)
-    // {
+//    Edit Product
+    public function edit_product($id)
+    {
+        $product = Product::find($id);
+         $categories = Category::select('id', 'name')->orderBy('name')->get();
+            // Fetch All Brands
+            $brands = Brand::select('id', 'name')->orderBy('name')->get();
+        return view('admin.edit-product', compact('product', 'categories', 'brands'));
 
-    //     $request->validate([
-    //         'name' => 'required',
-    //         'slug' => 'required|unique:products,slug',
-    //         'desc' => 'required',
-    //         'short_desc' => 'required',
-    //         'regular_price' => 'required',
-    //         'sale_price' => 'required',
-    //         'SKU' => 'required',
-    //         'stock_status' => 'required',
-    //         'featured' => 'required',
-    //         'quantity' => 'required',
-    //         'image' => 'require|mimes:png,jpg,jpeg|max:2048',
-    //         'category_id' => 'required',
-    //         'brand_id' => 'required',
-    //     ]);
-
-
-    //     $current_time = Carbon::now()->timestamp;
-
-    //     $product = Product::create([
-    //         'name' => $request->input('name'),
-    //         'slug' => $request->input('slug'),
-    //         'desc' => $request->input('desc'),
-    //         'short_desc' => $request->input('short_desc'),
-    //         'regular_price' => $request->input('regular_price'),
-    //         'sale_price' => $request->input('sale_price'),
-    //         'SKU' => $request->input('SKU'),
-    //         'stock_status' => $request->input('stock_status'),
-    //         'featured' => $request->input('featured'),
-    //         'quantity' => $request->input('quantity'),
-    //         'category_id' => $request->input('category_id'),
-    //         'brand_id' => $request->input('brand_id'),
-    //     ]);
-    //     if ($request->hasFile('image')) {
-    //         $image = $request->file('image');
-    //         $imageName = $current_time.'.'.$request->image->extension();
-    //         $product = Product::create([
-    //         'image' => $imageName
-    //         ]);
-
-    //     }
-    //     $request->image->move(public_path('uploads/products'), $imageName);
-
-    //     return redirect('admin/products')->with('status', 'Product has been added successfully');
-    //  }
-
+    }
 
 
 }

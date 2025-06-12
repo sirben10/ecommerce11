@@ -55,6 +55,8 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/product/add', [AdminController::class, 'add_product'])->name( 'admin.product.add');
     // Store Product Route
     Route::post('/admin/product/store', [AdminController::class, 'store_product'])->name( 'admin.product.store');
+    // Edit Product Route
+    Route::get('/admin/product/{id}/edit', [AdminController::class, 'edit_product'])->name( 'admin.product.edit');
 
 });
 // End Login Groups
