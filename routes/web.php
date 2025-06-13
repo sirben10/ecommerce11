@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Auth;
@@ -9,8 +10,11 @@ use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Session;
 
 Auth::routes();
-
+// Homepage Route
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+// Shop Page Route
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 
 // Login Groups
 // User Login
