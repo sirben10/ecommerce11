@@ -63,7 +63,7 @@ class AdminController extends Controller
         ]);
         $brand = new Brand();
         $brand->name = $request->name;
-        $brand->slug = Str::slug($request->slug);
+        $brand->slug = Str::slug($request->name);
         $image = $request->file('image');
         $file_extension = $request->file('image')->extension();
         $file_name = Carbon::now()->timestamp . '.' . $file_extension;
@@ -472,7 +472,7 @@ class AdminController extends Controller
         if (File::exists(public_path('uploads/products/thumbnails') . '/' . $product->image)) {
             File::delete(public_path('uploads/products/thumbnails') . '/' . $product->image);
         }
-        
+
         foreach (explode(',', $product->images) as $oldfile) {
                 if (File::exists(public_path('uploads/products') . '/' . $oldfile)) {
                     File::delete(public_path('uploads/products') . '/' . $oldfile);

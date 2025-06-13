@@ -17,4 +17,12 @@ class ShopController extends Controller
         $brands = Brand::select('id', 'name')->orderBy('name')->get();
         return view('shop', compact('products', 'categories', 'brands'));
     }
+
+    // Product detail
+    public function product_details($product_slug)
+    {
+        $product = Product::where('slug', $product_slug)->first();
+        $rproducts = Product::where('slug', '<>', $product_slug)->get()->take(5);
+        return view('details', compact('product', 'rproducts'));
+    }
 }

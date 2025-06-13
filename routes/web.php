@@ -16,6 +16,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 // Shop Page Route
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 
+// Product detail Route
+Route::get('/shop/{product_details}', [ShopController::class, 'product_details'])->name('shop.product.details');
+
 // Login Groups
 // User Login
 Route::middleware('auth')->group(function(){
