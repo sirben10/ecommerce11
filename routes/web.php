@@ -59,6 +59,8 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/product/{id}/edit', [AdminController::class, 'edit_product'])->name( 'admin.product.edit');
     // Update Product Route
     Route::put('/admin/product/update', [AdminController::class, 'update_product'])->name( 'admin.product.update');
+    // Delete Product Route
+    Route::delete('/admin/product/{id}/delete', [AdminController::class, 'delete_product'])->name( 'admin.product.delete');
 
 });
 // End Login Groups
