@@ -310,17 +310,20 @@
 
                     <div
                         class="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
+                        <select class="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0 me-3 px-3"
+                            aria-label="Page Size" id="pagesize" name="pagesize">
+                            <option  value="12" {{ $size == 12 ? "Selected" : '' }}>Show</option>
+                            <option value="24"{{ $size == 24 ? "Selected" : '' }}>24</option>
+                            <option value="48"{{ $size == 48 ? "Selected" : '' }}>48</option>
+                            <option value="100"{{ $size == 100 ? "Selected" : '' }}>100</option>
+                        </select>
                         <select class="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0"
-                            aria-label="Sort Items" name="total-number">
-                            <option selected>Default Sorting</option>
-                            <option value="1">Featured</option>
-                            <option value="2">Best selling</option>
-                            <option value="3">Alphabetically, A-Z</option>
-                            <option value="3">Alphabetically, Z-A</option>
-                            <option value="3">Price, low to high</option>
-                            <option value="3">Price, high to low</option>
-                            <option value="3">Date, old to new</option>
-                            <option value="3">Date, new to old</option>
+                            aria-label="Sort Items" name="orderby" id="orderby">
+                            <option value="-1" {{ $order == -1 ? "Selected" : '' }}>Default</option>
+                            <option value="1" {{ $order == 1 ? "Selected" : '' }}>Date, New to Old</option>
+                            <option value="2" {{ $order == 2 ? "Selected" : '' }}>Date, Old to New</option>
+                            <option value="3" {{ $order == 3 ? "Selected" : '' }}>Price, Low to High</option>
+                            <option value="4" {{ $order == 4 ? "Selected" : '' }}>Price, High to </opLowtion>
                         </select>
 
                         <div class="shop-asc__seprator mx-3 bg-light d-none d-md-block order-md-0"></div>
@@ -462,7 +465,7 @@
 
                 <div class="divider"></div>
                 <div class="flex items-center justify-between flex-wrap gap-10 wgp-pagination">
-                    {{ $products->links('pagination::bootstrap-5') }}
+                    {{ $products->withQueryString()->links('pagination::bootstrap-5') }}
                 </div>
 
 
@@ -490,4 +493,26 @@
             </div>
         </section>
     </main>
+    <form id="frmfilter" action="{{ route('shop.index') }}" method="GET">
+        <input type="hidden" name="page" value="{{ $products->currentPage() }}" />
+        <input type="hidden" id="size" name="size" value="{{ $size }}" />
+        <input type="hidden" id="order" name="order" value="{{ $order }}" />
+    </form>
 @endsection
+@push('scripts')
+    <script>
+        $(function() {
+            $("#pagesize").on("change", function(){
+                $("#size").val($("#pagesize option:selected").val());
+                $("#frmfilter").submit();
+            });
+
+            $("#orderby").on("change", function(){
+                $("#order").val($("#orderby option:selected").val());
+                $("#frmfilter").submit();
+            });
+
+
+        });
+    </script>
+@endpush
