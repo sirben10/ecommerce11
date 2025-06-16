@@ -19,6 +19,7 @@ Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 
 // Product detail Route
 Route::get('/shop/{product_details}', [ShopController::class, 'product_details'])->name('shop.product.details');
+
 // Shopping Cart Route
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 // Add to Cart Route
@@ -26,6 +27,10 @@ Route::post('/cart/add', [CartController::class, 'add_to_cart'])->name('cart.add
 // Update  Cart Route
 Route::put('/cart/increase_quantity/{rowId}', [CartController::class, 'increase_cart_qty'])->name('cart.qty.increase');
 Route::put('/cart/decrease_quantity/{rowId}', [CartController::class, 'decrease_cart_qty'])->name('cart.qty.decrease');
+// Remove  Cart  Item Route
+Route::delete('/cart/remove/{rowId}', [CartController::class, 'remove_cart_item'])->name('cart.remove.item');
+// Empty  Cart Route
+Route::delete('/cart/clear', [CartController::class, 'empty_cart'])->name('cart.empty');
 
 // Login Groups
 // User Login

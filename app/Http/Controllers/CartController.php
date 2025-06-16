@@ -36,10 +36,19 @@ class CartController extends Controller
         Cart::instance('cart')->update($rowId, $qty);
         return redirect()->back();
     }
-    // Update To Cart
-    // public function update_cart(Request $request)
-    // {
-    //     Cart::instance('cart')->update($request->id, $request->name, $request->quantity,$request->price)->associate('App\Models\Product');
-    //     return redirect()->back();
-    // }
+    // REMOVE CART ITEM
+    public function remove_cart_item($rowId)
+    {
+         Cart::instance('cart')->remove($rowId);
+        return redirect()->back();
+
+    }
+    // Clear CART
+    public function empty_cart()
+    {
+         Cart::instance('cart')->destroy();
+        return redirect()->back();
+
+    }
+
 }
