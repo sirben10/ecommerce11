@@ -23,6 +23,9 @@ Route::get('/shop/{product_details}', [ShopController::class, 'product_details']
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 // Add to Cart Route
 Route::post('/cart/add', [CartController::class, 'add_to_cart'])->name('cart.add');
+// Update  Cart Route
+Route::put('/cart/increase_quantity/{rowId}', [CartController::class, 'increase_cart_qty'])->name('cart.qty.increase');
+Route::put('/cart/decrease_quantity/{rowId}', [CartController::class, 'decrease_cart_qty'])->name('cart.qty.decrease');
 
 // Login Groups
 // User Login
