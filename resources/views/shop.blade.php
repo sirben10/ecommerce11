@@ -31,9 +31,9 @@
                             <div class="accordion-body px-0 pb-0 pt-3">
                                 <ul class="list list-inline mb-0">
                                     @foreach ($categories as $category)
-                                    <li class="list-item">
-                                        <a href="#" class="menu-link py-1">{{ $category->name }}</a>
-                                    </li>
+                                        <li class="list-item">
+                                            <a href="#" class="menu-link py-1">{{ $category->name }}</a>
+                                        </li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -140,7 +140,7 @@
                             <div class="search-field multi-select accordion-body px-0 pb-0">
                                 <select class="d-none" multiple name="total-numbers-list">
                                     @foreach ($brands as $brand)
-                                    <option value="{{ $brand->id }} ">{{ $brand->name }} </option>
+                                        <option value="{{ $brand->id }} ">{{ $brand->name }} </option>
                                     @endforeach
                                 </select>
                                 <div class="search-field__input-wrapper mb-3">
@@ -150,13 +150,12 @@
                                 </div>
                                 <ul class="multi-select__list list-unstyled">
                                     @foreach ($brands as $brand)
+                                        <li
+                                            class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
+                                            <span class="me-auto">{{ $brand->name }} </span>
 
-                                    <li
-                                        class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
-                                        <span class="me-auto">{{ $brand->name }} </span>
-
-                                        {{-- <span class="text-secondary">{{$product }}</span> --}}
-                                    </li>
+                                            {{-- <span class="text-secondary">{{$product }}</span> --}}
+                                        </li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -358,14 +357,18 @@
                                         data-settings='{"resizeObserver": true}'>
                                         <div class="swiper-wrapper">
                                             <div class="swiper-slide">
-                                                <a href="{{ route('shop.product.details',['product_details'=>$product->slug]) }}"><img loading="lazy"
+                                                <a
+                                                    href="{{ route('shop.product.details', ['product_details' => $product->slug]) }}"><img
+                                                        loading="lazy"
                                                         src="{{ asset('uploads/products/') }}/{{ $product->image }}"
                                                         width="330" height="400" alt="{{ $product->nam }}"
                                                         class="pc__img"></a>
                                             </div>
                                             <div class="swiper-slide">
                                                 @foreach (explode(',', $product->images) as $gimg)
-                                                    <a href="{{ route('shop.product.details',['product_details'=>$product->slug]) }}"><img loading="lazy"
+                                                    <a
+                                                        href="{{ route('shop.product.details', ['product_details' => $product->slug]) }}"><img
+                                                            loading="lazy"
                                                             src="{{ asset('uploads/products') }}/{{ $gimg }}"
                                                             width="330" height="400" alt="{{ $product->name }}"
                                                             class="pc__img"></a>
@@ -381,18 +384,37 @@
                                                 <use href="#icon_next_sm" />
                                             </svg></span>
                                     </div>
-                                    <button
-                                        class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
-                                        data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                                    @if (Cart::instance('cart')->content()->where('id', $product->id)->count() > 0)
+                                        <a href="{{ route('cart.index') }}"
+                                            class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium btn-warning mb-3">Go
+                                            to cart</a>
+                                    @else
+                                        <form name="addtocart-form" method="post" action="{{ route('cart.add') }}">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $product->id }}">
+                                            <input type="hidden" name="quantity" value="1">
+                                            <input type="hidden" name="name" value="{{ $product->name }}">
+                                            <input type="hidden" name="price"
+                                                value="{{ $product->sale_price == '' ? $product->regular_price : $product->sale_price }}">
+
+                                            <button
+                                                Type="submit" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium"
+                                                data-aside="cartDrawer" title="Add To Cart">Add To Cart
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
 
                                 <div class="pc__info position-relative">
                                     <p class="pc__category">{{ $product->category->name }}</p>
-                                    <h6 class="pc__title"><a href="{{ route('shop.product.details',['product_details'=>$product->slug]) }}">{{ $product->name }}</a></h6>
+                                    <h6 class="pc__title"><a
+                                            href="{{ route('shop.product.details', ['product_details' => $product->slug]) }}">{{ $product->name }}</a>
+                                    </h6>
                                     <div class="product-card__price d-flex">
                                         <span class="money price">
                                             @if ($product->sale_price)
-                                                <s>${{ number_format($product->regular_price, 2) }}</s> ${{ number_format($product->sale_price,2) }}
+                                                <s>${{ number_format($product->regular_price, 2) }}</s>
+                                                ${{ number_format($product->sale_price, 2) }}
                                             @else
                                                 ${{ number_format($product->regular_price, 2) }}
                                             @endif

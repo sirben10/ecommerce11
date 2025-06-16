@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
@@ -18,6 +19,10 @@ Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 
 // Product detail Route
 Route::get('/shop/{product_details}', [ShopController::class, 'product_details'])->name('shop.product.details');
+// Shopping Cart Route
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+// Add to Cart Route
+Route::post('/cart/add', [CartController::class, 'add_to_cart'])->name('cart.add');
 
 // Login Groups
 // User Login
