@@ -15,6 +15,8 @@ class ShopController extends Controller
         $o_column = "";
         $o_order = "";
         $order = $request->query('order') ? $request->query('order') : -1;
+        $f_brands = $request->query('brands');
+        $f_categories = $request->query('categories');
         switch ($order) {
             case 1:
                 $o_column = 'created_at';
@@ -38,11 +40,17 @@ class ShopController extends Controller
                 $o_order = 'DESC';
                 break;
         }
-        $products = Product::orderBy($o_column, $o_order)->paginate($size);
-        $categories = Category::select('id', 'name')->orderBy('name')->get();
+        // $products = Product::orderBy($o_column, $o_order)->paginate($size);
+        $products = Product::where(function($query)use($f_brands){
+            $query->whereIn('brand_id', explode(',',$f_brands))->orWhereRaw("'".$f_brands."'=''");
+        })->where(function($query)use($f_categories){
+            $query->whereIn('category_id', explode(',',$f_categories))->orWhereRaw("'".$f_categories."'=''");
+        })->orderBy($o_column, $o_order)->paginate($size);
+        // $categories = Category::select('id', 'name')->orderBy('name')->get();
+        $categories = Category::orderBy('name', 'ASC')->get();
         // Fetch All Brands
-        $brands = Brand::select('id', 'name')->orderBy('name')->get();
-        return view('shop', compact('products', 'categories', 'brands', 'size', 'order'));
+        $brands = Brand::orderBy('name', 'ASC')->get();
+        return view('shop', compact('products', 'categories', 'brands', 'size', 'order','f_brands','f_categories'));
     }
 
     // Product detail

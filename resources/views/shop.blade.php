@@ -1,5 +1,21 @@
 @extends('layouts.app')
 @section('content')
+    <style>
+        .brand-list li,
+        .category-list li {
+            line-height: 50px
+        }
+
+        .brand-list li,
+        .chk-brand .category-list li .chk-category {
+            width: 1rem;
+            height: 1rem;
+            color: #e4e4e4;
+            border: 0.125rem solid currentColor;
+            border-radius: 0;
+            margin-right: 6.75rem;
+        }
+    </style>
     <main class="pt-90">
         <section class="shop-main container d-flex pt-4 pt-xl-5">
             <div class="shop-sidebar side-sticky bg-body" id="shopFilter">
@@ -28,11 +44,16 @@
                         </h5>
                         <div id="accordion-filter-1" class="accordion-collapse collapse show border-0"
                             aria-labelledby="accordion-heading-1" data-bs-parent="#categories-list">
-                            <div class="accordion-body px-0 pb-0 pt-3">
+                            <div class="accordion-body px-0 pb-0 pt-3 category-list">
                                 <ul class="list list-inline mb-0">
                                     @foreach ($categories as $category)
                                         <li class="list-item">
-                                            <a href="#" class="menu-link py-1">{{ $category->name }}</a>
+                                            <span class="menu-link py-1">
+                                                <input type="checkbox" class="chk-category" name="categories" id=""
+                                                    value="{{ $category->id }}">
+                                                {{ $category->name }}
+                                            </span>
+                                            <span class="text-right float-end">{{ $category->products->count() }}</span>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -138,11 +159,6 @@
                         <div id="accordion-filter-brand" class="accordion-collapse collapse show border-0"
                             aria-labelledby="accordion-heading-brand" data-bs-parent="#brand-filters">
                             <div class="search-field multi-select accordion-body px-0 pb-0">
-                                <select class="d-none" multiple name="total-numbers-list">
-                                    @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }} ">{{ $brand->name }} </option>
-                                    @endforeach
-                                </select>
                                 <div class="search-field__input-wrapper mb-3">
                                     <input type="text" name="search_text"
                                         class="search-field__input form-control form-control-sm border-light border-2"
@@ -154,7 +170,6 @@
                                             class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
                                             <span class="me-auto">{{ $brand->name }} </span>
 
-                                            {{-- <span class="text-secondary">{{$product }}</span> --}}
                                         </li>
                                     @endforeach
                                 </ul>
@@ -312,18 +327,18 @@
                         class="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
                         <select class="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0 me-3 px-3"
                             aria-label="Page Size" id="pagesize" name="pagesize">
-                            <option  value="12" {{ $size == 12 ? "Selected" : '' }}>Show</option>
-                            <option value="24"{{ $size == 24 ? "Selected" : '' }}>24</option>
-                            <option value="48"{{ $size == 48 ? "Selected" : '' }}>48</option>
-                            <option value="100"{{ $size == 100 ? "Selected" : '' }}>100</option>
+                            <option value="12" {{ $size == 12 ? 'Selected' : '' }}>Show</option>
+                            <option value="24"{{ $size == 24 ? 'Selected' : '' }}>24</option>
+                            <option value="48"{{ $size == 48 ? 'Selected' : '' }}>48</option>
+                            <option value="100"{{ $size == 100 ? 'Selected' : '' }}>100</option>
                         </select>
                         <select class="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0"
                             aria-label="Sort Items" name="orderby" id="orderby">
-                            <option value="-1" {{ $order == -1 ? "Selected" : '' }}>Default</option>
-                            <option value="1" {{ $order == 1 ? "Selected" : '' }}>Date, New to Old</option>
-                            <option value="2" {{ $order == 2 ? "Selected" : '' }}>Date, Old to New</option>
-                            <option value="3" {{ $order == 3 ? "Selected" : '' }}>Price, Low to High</option>
-                            <option value="4" {{ $order == 4 ? "Selected" : '' }}>Price, High to </opLowtion>
+                            <option value="-1" {{ $order == -1 ? 'Selected' : '' }}>Default</option>
+                            <option value="1" {{ $order == 1 ? 'Selected' : '' }}>Date, New to Old</option>
+                            <option value="2" {{ $order == 2 ? 'Selected' : '' }}>Date, Old to New</option>
+                            <option value="3" {{ $order == 3 ? 'Selected' : '' }}>Price, Low to High</option>
+                            <option value="4" {{ $order == 4 ? 'Selected' : '' }}>Price, High to </opLowtion>
                         </select>
 
                         <div class="shop-asc__seprator mx-3 bg-light d-none d-md-block order-md-0"></div>
@@ -400,8 +415,8 @@
                                             <input type="hidden" name="price"
                                                 value="{{ $product->sale_price == '' ? $product->regular_price : $product->sale_price }}">
 
-                                            <button
-                                                Type="submit" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium"
+                                            <button Type="submit"
+                                                class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium"
                                                 data-aside="cartDrawer" title="Add To Cart">Add To Cart
                                             </button>
                                         </form>
@@ -497,18 +512,48 @@
         <input type="hidden" name="page" value="{{ $products->currentPage() }}" />
         <input type="hidden" id="size" name="size" value="{{ $size }}" />
         <input type="hidden" id="order" name="order" value="{{ $order }}" />
+        <input type="hidden" id="hdnBrands" name="brands" />
+        <input type="hidden" id="hdnCategories" name="categories" />
     </form>
 @endsection
 @push('scripts')
     <script>
         $(function() {
-            $("#pagesize").on("change", function(){
+            $("#pagesize").on("change", function() {
                 $("#size").val($("#pagesize option:selected").val());
                 $("#frmfilter").submit();
             });
 
-            $("#orderby").on("change", function(){
+            $("#orderby").on("change", function() {
                 $("#order").val($("#orderby option:selected").val());
+                $("#frmfilter").submit();
+            });
+
+            $("input[name = 'brands']").on("change", function(){
+                var brands = "";
+                $("input[name = 'brands']:checked").each(function() {
+                    if (brands = "") {
+                        brands += $(this).val();
+                    } else {
+                        brands += "," + $(this).val();
+
+                    }
+                });
+                $("#hdnBrands").val(brands);
+                $("#frmfilter").submit();
+            });
+
+            $("input[name = 'categories']").on("change", function(){
+                var categories = "";
+                $("input[name = 'categories']:checked").each(function() {
+                    if (categories = "") {
+                        categories += $(this).val();
+                    } else {
+                        categories += "," + $(this).val();
+
+                    }
+                });
+                $("#hdnCategories").val(categories);
                 $("#frmfilter").submit();
             });
 
