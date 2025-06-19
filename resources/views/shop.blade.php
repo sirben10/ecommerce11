@@ -1,13 +1,14 @@
 @extends('layouts.app')
 @section('content')
-<style>
-     .brand-list li,
+    <style>
+        .brand-list li,
         .category-list li {
             line-height: 40px
         }
 
         .brand-list li,
-        .chk-brand, .category-list li .chk-category {
+        .chk-brand,
+        .category-list li .chk-category {
             width: 1rem;
             height: 1rem;
             color: #e4e4e4;
@@ -15,8 +16,7 @@
             border-radius: 0;
             margin-right: 0.75rem;
         }
-
-</style>
+    </style>
     <main class="pt-90">
         <section class="shop-main container d-flex pt-4 pt-xl-5">
             <div class="shop-sidebar side-sticky bg-body" id="shopFilter">
@@ -52,9 +52,7 @@
                                             <span class="menu-link py-1">
                                                 <input type="checkbox" class="chk-category" name="categories"
                                                     value="{{ $category->id }}"
-                                                    @if (in_array($category->id, explode(',',$f_categories)))
-                                                    checked = "checked"
-                                                    @endif>
+                                                    @if (in_array($category->id, explode(',', $f_categories))) checked = "checked" @endif>
                                                 {{ $category->name }}
                                             </span>
                                             <span class="text-right float-end">{{ $category->products->count() }}</span>
@@ -179,9 +177,7 @@
                                             <span class="menu-link py-1">
                                                 <input type="checkbox" class="chk-brand" name="brands"
                                                     value="{{ $brand->id }}"
-                                                     @if (in_array($brand->id, explode(',',$f_brands)))
-                                                    checked = "checked"
-                                                    @endif>
+                                                    @if (in_array($brand->id, explode(',', $f_brands))) checked = "checked" @endif>
                                                 {{ $brand->name }}
                                             </span>
                                             <span class="text-right float-end">{{ $brand->products->count() }}</span>
@@ -213,16 +209,16 @@
                         <div id="accordion-filter-price" class="accordion-collapse collapse show border-0"
                             aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
                             <input class="price-range-slider" type="text" name="price_range" value=""
-                                data-slider-min="10" data-slider-max="1000" data-slider-step="5"
-                                data-slider-value="[250,450]" data-currency="$" />
+                                data-slider-min="1" data-slider-max="500000" data-slider-step="5"
+                                data-slider-value="[{{ $min_price }},{{ $max_price }}]" data-currency="$" />
                             <div class="price-range__info d-flex align-items-center mt-2">
                                 <div class="me-auto">
                                     <span class="text-secondary">Min Price: </span>
-                                    <span class="price-range__min">$250</span>
+                                    <span class="price-range__min">$1</span>
                                 </div>
                                 <div>
                                     <span class="text-secondary">Max Price: </span>
-                                    <span class="price-range__max">$450</span>
+                                    <span class="price-range__max">$500,000</span>
                                 </div>
                             </div>
                         </div>
@@ -529,6 +525,8 @@
         <input type="hidden" id="order" name="order" value="{{ $order }}" />
         <input type="hidden" id="hdnBrands" name="brands" />
         <input type="hidden" id="hdnCategories" name="categories" />
+        <input type="hidden" id="hdnMinPrice" name="min" value="{{ $min_price }} " />
+        <input type="hidden" id="hdnMaxPrice" name="max" value="{{ $max_price }} " />
     </form>
 @endsection
 @push('scripts')
@@ -544,7 +542,7 @@
                 $("#frmfilter").submit();
             });
 
-             $("input[name = 'brands']").on("change", function(){
+            $("input[name = 'brands']").on("change", function() {
                 var brands = "";
                 $("input[name = 'brands']:checked").each(function() {
                     if (brands = "") {
@@ -558,21 +556,29 @@
                 $("#frmfilter").submit();
             });
 
-            $("input[name = 'categories']").on("change", function(){
+            $("input[name = 'categories']").on("change", function() {
                 var categories = "";
                 $("input[name = 'categories']:checked").each(function() {
                     if (categories = "") {
                         categories += $(this).val();
                     } else {
                         categories += "," + $(this).val();
-
                     }
                 });
                 $("#hdnCategories").val(categories);
                 $("#frmfilter").submit();
             });
 
+            $("[name = 'price_range']").on("change", function() {
+                var min = $(this).val().split(',')[0];
+                var max = $(this).val().split(',')[1];
+                $("#hdnMinPrice").val(min);
+                $("#hdnMaxPrice").val(max);
+                setTimeout(()=>{
+                    $("#frmfilter").submit();
+                }, 2000);
 
+            });
 
 
 
