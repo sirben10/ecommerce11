@@ -14,6 +14,8 @@ class ShopController extends Controller
         $size = $request->query('size') ? $request->query('size') : 12;
         $o_column = "";
         $o_order = "";
+        $f_brands= "";
+        $f_categories= "";
         $order = $request->query('order') ? $request->query('order') : -1;
         $f_brands = $request->query('brands');
         $f_categories = $request->query('categories');
@@ -46,11 +48,11 @@ class ShopController extends Controller
         })->where(function($query)use($f_categories){
             $query->whereIn('category_id', explode(',',$f_categories))->orWhereRaw("'".$f_categories."'=''");
         })->orderBy($o_column, $o_order)->paginate($size);
-        // $categories = Category::select('id', 'name')->orderBy('name')->get();
-        $categories = Category::orderBy('name', 'ASC')->get();
+
+        $categories = Category::select('id', 'name')->orderBy('name', 'ASC')->get();
         // Fetch All Brands
-        $brands = Brand::orderBy('name', 'ASC')->get();
-        return view('shop', compact('products', 'categories', 'brands', 'size', 'order','f_brands','f_categories'));
+        $brands = Brand::select('id', 'name')->orderBy('name', 'ASC')->get();
+        return view('shop', compact('products', 'categories', 'brands', 'size', 'order', 'f_categories', 'f_brands'));
     }
 
     // Product detail

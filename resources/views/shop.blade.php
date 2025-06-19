@@ -1,21 +1,22 @@
 @extends('layouts.app')
 @section('content')
-    <style>
-        .brand-list li,
+<style>
+     .brand-list li,
         .category-list li {
-            line-height: 50px
+            line-height: 40px
         }
 
         .brand-list li,
-        .chk-brand .category-list li .chk-category {
+        .chk-brand, .category-list li .chk-category {
             width: 1rem;
             height: 1rem;
             color: #e4e4e4;
             border: 0.125rem solid currentColor;
             border-radius: 0;
-            margin-right: 6.75rem;
+            margin-right: 0.75rem;
         }
-    </style>
+
+</style>
     <main class="pt-90">
         <section class="shop-main container d-flex pt-4 pt-xl-5">
             <div class="shop-sidebar side-sticky bg-body" id="shopFilter">
@@ -49,8 +50,11 @@
                                     @foreach ($categories as $category)
                                         <li class="list-item">
                                             <span class="menu-link py-1">
-                                                <input type="checkbox" class="chk-category" name="categories" id=""
-                                                    value="{{ $category->id }}">
+                                                <input type="checkbox" class="chk-category" name="categories"
+                                                    value="{{ $category->id }}"
+                                                    @if (in_array($category->id, explode(',',$f_categories)))
+                                                    checked = "checked"
+                                                    @endif>
                                                 {{ $category->name }}
                                             </span>
                                             <span class="text-right float-end">{{ $category->products->count() }}</span>
@@ -159,6 +163,11 @@
                         <div id="accordion-filter-brand" class="accordion-collapse collapse show border-0"
                             aria-labelledby="accordion-heading-brand" data-bs-parent="#brand-filters">
                             <div class="search-field multi-select accordion-body px-0 pb-0">
+                                <select class="d-none" multiple name="total-numbers-list">
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->id }} ">{{ $brand->name }} </option>
+                                    @endforeach
+                                </select>
                                 <div class="search-field__input-wrapper mb-3">
                                     <input type="text" name="search_text"
                                         class="search-field__input form-control form-control-sm border-light border-2"
@@ -166,10 +175,16 @@
                                 </div>
                                 <ul class="multi-select__list list-unstyled">
                                     @foreach ($brands as $brand)
-                                        <li
-                                            class="search-suggestion__item multi-select__item text-primary js-search-select js-multi-select">
-                                            <span class="me-auto">{{ $brand->name }} </span>
-
+                                        <li class="list-item">
+                                            <span class="menu-link py-1">
+                                                <input type="checkbox" class="chk-brand" name="brands"
+                                                    value="{{ $brand->id }}"
+                                                     @if (in_array($brand->id, explode(',',$f_brands)))
+                                                    checked = "checked"
+                                                    @endif>
+                                                {{ $brand->name }}
+                                            </span>
+                                            <span class="text-right float-end">{{ $brand->products->count() }}</span>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -529,7 +544,7 @@
                 $("#frmfilter").submit();
             });
 
-            $("input[name = 'brands']").on("change", function(){
+             $("input[name = 'brands']").on("change", function(){
                 var brands = "";
                 $("input[name = 'brands']:checked").each(function() {
                     if (brands = "") {
@@ -556,6 +571,9 @@
                 $("#hdnCategories").val(categories);
                 $("#frmfilter").submit();
             });
+
+
+
 
 
         });
