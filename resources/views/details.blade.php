@@ -17,7 +17,7 @@
 
                                     <div class="swiper-slide product-single__image-item">
                                         <img loading="lazy" class="h-auto"
-                                            src="{{ asset('uploads/products') }}/{{ $product->image }}" width="674"
+                                            src="{{ asset('uploads/products/')}}/{{ $products->image }}" width="674"
                                             height="674" alt="" />
                                         <a data-fancybox="gallery"
                                             href="{{ asset('uploads/products') }}/{{ $product->image }}"
