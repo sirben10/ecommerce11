@@ -94,6 +94,8 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     // Delete Product Route
     Route::delete('/admin/product/{id}/delete', [AdminController::class, 'delete_product'])->name( 'admin.product.delete');
 
+    // GET COUPONS
+    Route::get('/admin/coupons', [AdminController::class, 'coupons'])->name('admin.coupons');
 });
 // End Login Groups
 
