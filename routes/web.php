@@ -46,12 +46,12 @@ Route::post('/wishlist/move-to-cart/{rowId}', [WishListController::class, 'move_
 
 // Login Groups
 // User Login
-Route::middleware('auth')->group(function(){
+Route::middleware('auth')->group(function () {
     Route::get('/acount-dashboard', [UserController::class, 'index'])->name('user.index');
 });
 
 // Admin Login and rights
-Route::middleware(['auth', AuthAdmin::class])->group(function(){
+Route::middleware(['auth', AuthAdmin::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
     // Brand Route
@@ -65,34 +65,34 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/brand/edit/{id}', [AdminController::class, 'edit_brand'])->name('admin.edit-brand');
     // Update Brand
     Route::put('/admin/brand/update', [AdminController::class, 'brand_update'])->name('admin.update-brand');
-//    Delete Brand Route
+    //    Delete Brand Route
     Route::delete('/admin/brand/{id}/delete', [AdminController::class, 'delete_brand'])->name('admin.delete-brand');
 
     //    Category Route
-    Route::get('/admin/categories', [AdminController::class, 'categories'])->name( 'admin.categories');
+    Route::get('/admin/categories', [AdminController::class, 'categories'])->name('admin.categories');
     //   New Category Route
-    Route::get('/admin/category/add', [AdminController::class, 'add_category'])->name( 'admin.new-category');
+    Route::get('/admin/category/add', [AdminController::class, 'add_category'])->name('admin.new-category');
     //   Store Category Route
-    Route::post('/admin/category/store', [AdminController::class, 'store_category'])->name( 'admin.store-category');
+    Route::post('/admin/category/store', [AdminController::class, 'store_category'])->name('admin.store-category');
     //   Edit Category Route
-    Route::get('/admin/category/{id}/edit', [AdminController::class, 'edit_category'])->name( 'admin.edit-category');
+    Route::get('/admin/category/{id}/edit', [AdminController::class, 'edit_category'])->name('admin.edit-category');
     //   Update Category Route
-    Route::put('/admin/category/update', [AdminController::class, 'update_category'])->name( 'admin.update-category');
+    Route::put('/admin/category/update', [AdminController::class, 'update_category'])->name('admin.update-category');
     //   Delete Category Route
-    Route::delete('/admin/category/{id}/delete', [AdminController::class, 'delete_category'])->name( 'admin.delete-category');
+    Route::delete('/admin/category/{id}/delete', [AdminController::class, 'delete_category'])->name('admin.delete-category');
 
     // Products Route
-    Route::get('/admin/products', [AdminController::class, 'products'])->name( 'admin.products');
+    Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
     // Add Product Route
-    Route::get('/admin/product/add', [AdminController::class, 'add_product'])->name( 'admin.product.add');
+    Route::get('/admin/product/add', [AdminController::class, 'add_product'])->name('admin.product.add');
     // Store Product Route
-    Route::post('/admin/product/store', [AdminController::class, 'store_product'])->name( 'admin.product.store');
+    Route::post('/admin/product/store', [AdminController::class, 'store_product'])->name('admin.product.store');
     // Edit Product Route
-    Route::get('/admin/product/{id}/edit', [AdminController::class, 'edit_product'])->name( 'admin.product.edit');
+    Route::get('/admin/product/{id}/edit', [AdminController::class, 'edit_product'])->name('admin.product.edit');
     // Update Product Route
-    Route::put('/admin/product/update', [AdminController::class, 'update_product'])->name( 'admin.product.update');
+    Route::put('/admin/product/update', [AdminController::class, 'update_product'])->name('admin.product.update');
     // Delete Product Route
-    Route::delete('/admin/product/{id}/delete', [AdminController::class, 'delete_product'])->name( 'admin.product.delete');
+    Route::delete('/admin/product/{id}/delete', [AdminController::class, 'delete_product'])->name('admin.product.delete');
 
     // GET COUPONS
     Route::get('/admin/coupons', [AdminController::class, 'coupons'])->name('admin.coupons');
@@ -104,6 +104,7 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/coupon/{id}/edit', [AdminController::class, 'edit_coupon'])->name('admin.coupon.edit');
     // Update COUPON
     Route::put('/admin/coupon/update', [AdminController::class, 'update_coupon'])->name('admin.coupon.update');
+    // Delete COUPON
+    Route::delete('/admin/coupon/{id}/delete', [AdminController::class, 'delete_coupon'])->name('admin.coupon.delete');
 });
 // End Login Groups
-
