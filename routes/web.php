@@ -41,6 +41,8 @@ Route::get('/wishlist', [WishListController::class, 'index'])->name('wishlist.in
 Route::delete('/wishlist/item/remove/{rowId}', [WishListController::class, 'remove_item'])->name('wishlist.item.remove');
 // Clear  Wishlist
 Route::delete('/wishlist/clear', [WishListController::class, 'empty_wishlist'])->name('wishlist.items.clear');
+// Move to Cart Route
+Route::post('/wishlist/move-to-cart/{rowId}', [WishListController::class, 'move_wishlist_to_cart'])->name('wishlist.move.to.cart');
 
 // Login Groups
 // User Login
