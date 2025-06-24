@@ -100,6 +100,10 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::get('/admin/coupon/add', [AdminController::class, 'add_coupon'])->name('admin.coupon.add');
     // Store COUPON
     Route::post('/admin/coupon/store', [AdminController::class, 'store_coupon'])->name('admin.coupon.store');
+    // Edit COUPON
+    Route::get('/admin/coupon/{id}/edit', [AdminController::class, 'edit_coupon'])->name('admin.coupon.edit');
+    // Update COUPON
+    Route::put('/admin/coupon/update', [AdminController::class, 'update_coupon'])->name('admin.coupon.update');
 });
 // End Login Groups
 
