@@ -111,12 +111,22 @@
                             </tbody>
                         </table>
                         <div class="cart-table-footer">
+                            @if (!Session::has('coupon'))
                             <form action="{{ route('cart.coupon.apply') }}" method="POST" class="position-relative bg-body">
                                 @csrf
-                                <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code" value="@if(Session::has('coupon')) {{ Session::get('coupon')['code'] }} Applied! @endif">
+                                <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code" value="">
                                 <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit"
                                     value="APPLY COUPON">
                             </form>
+                            @else
+                            <form action="{{ route('cart.coupon.remove') }}" method="POST" class="position-relative bg-body">
+                                @csrf
+                                @method('DELETE')
+                                <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code" value="@if(Session::has('coupon')) {{ Session::get('coupon')['code'] }} Applied! @endif">
+                                <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit"
+                                    value="REMOVE COUPON">
+                            </form>
+                            @endif
                             <form action="{{ route('cart.empty') }}" method="post">
                                 @csrf
                                 @method('DELETE')
@@ -144,11 +154,11 @@
                                         </tr>
                                         <tr>
                                             <th>Discount {{ Session::get('coupon')['code'] }}</th>
-                                            <td>${{ Session::get('discounts')['discount'] }}</td>
+                                            <td>${{ number_format(floatval(Session::get('discounts')['discount'])) }}</td>
                                         </tr>
                                         <tr>
                                             <th>Subtotal After Discount</th>
-                                            <td>${{Session::get('discounts')['subtotal'] }}</td>
+                                            <td>${{number_format(floatval(Session::get('discounts')['subtotal'])) }}</td>
                                         </tr>
                                         <tr>
                                             <th>Shipping</th>
@@ -158,11 +168,11 @@
                                         </tr>
                                         <tr>
                                             <th>VAT</th>
-                                            <td>${{Session::get('discounts')['tax'] }}</td>
+                                            <td>${{number_format(floatval(Session::get('discounts')['tax'])) }}</td>
                                         </tr>
                                         <tr>
                                             <th>Total</th>
-                                            <td>${{Session::get('discounts')['total'] }}</td>
+                                            <td>${{number_format(floatval(Session::get('discounts')['total'])) }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

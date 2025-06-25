@@ -33,6 +33,11 @@ Route::delete('/cart/remove/{rowId}', [CartController::class, 'remove_cart_item'
 // Empty  Cart Route
 Route::delete('/cart/clear', [CartController::class, 'empty_cart'])->name('cart.empty');
 
+// Apply Coupon
+Route::post('/cart/apply-coupon', [CartController::class, 'apply_coupon_code'])->name('cart.coupon.apply');
+// Remove Coupon Code
+Route::delete('/cart/remove-coupon', [CartController::class, 'remove_coupon_code'])->name('cart.coupon.remove');
+
 // Add to Wish List Route
 Route::post('/wishlist/add', [WishListController::class, 'add_to_whichlist'])->name('wishlist.add');
 // Show All Wishlist
@@ -43,9 +48,6 @@ Route::delete('/wishlist/item/remove/{rowId}', [WishListController::class, 'remo
 Route::delete('/wishlist/clear', [WishListController::class, 'empty_wishlist'])->name('wishlist.items.clear');
 // Move to Cart Route
 Route::post('/wishlist/move-to-cart/{rowId}', [WishListController::class, 'move_wishlist_to_cart'])->name('wishlist.move.to.cart');
-
-// Apply Coupon
-Route::post('/cart/apply-coupon', [CartController::class, 'apply_coupon_code'])->name('cart.coupon.apply');
 
 // Login Groups
 // User Login
