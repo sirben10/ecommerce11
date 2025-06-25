@@ -503,9 +503,9 @@ class AdminController extends Controller
         $request->validate([
             'code' => 'required',
             'type' => 'required',
-            'value' => 'required | numeric',
-            'cart_value' => 'required | numeric',
-            'expiry_date' => 'required | date'
+            'value' => 'required|numeric',
+            'cart_value' => 'required|numeric',
+            'expiry_date' => 'required|date'
         ]);
         $coupon = new Coupon();
         $coupon ->code =  $request->code;

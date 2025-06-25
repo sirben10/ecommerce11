@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Surfsidemedia\Shoppingcart\Facades\Cart;
 
 class CartController extends Controller
@@ -16,7 +19,7 @@ class CartController extends Controller
     // Add To Cart
     public function add_to_cart(Request $request)
     {
-        Cart::instance('cart')->add($request->id, $request->name, $request->quantity,$request->price)->associate('App\Models\Product');
+        Cart::instance('cart')->add($request->id, $request->name, $request->quantity, $request->price)->associate('App\Models\Product');
         return redirect()->back();
     }
 
@@ -39,16 +42,84 @@ class CartController extends Controller
     // REMOVE CART ITEM
     public function remove_cart_item($rowId)
     {
-         Cart::instance('cart')->remove($rowId);
+        Cart::instance('cart')->remove($rowId);
         return redirect()->back();
-
     }
     // Clear CART
     public function empty_cart()
     {
-         Cart::instance('cart')->destroy();
+        Cart::instance('cart')->destroy();
         return redirect()->back();
-
     }
 
+    public function apply_coupon_code(Request $request)
+    {
+        // $coupon = Coupon::get('cart_value')->first();
+        // dd(Cart::instance('cart')->subtotal().' - '.$coupon);
+        $coupon_code = $request->coupon_code;
+        if (isset($coupon_code)) {
+            // dd($coupon_code);
+            $coupon = Coupon::where('code', $coupon_code)
+                ->where('expiry_date', '>=', Carbon::today())
+                ->where('cart_value', '<=',  str_replace(',', '', Cart::instance('cart')->subtotal()))->first();
+            //    dd(Coupon::get('cart_value').' AND Cart Subtotal is '.  str_replace( ',', '', Cart::instance('cart')->subtotal()));
+            if ($coupon) {
+                Session::put('coupon', [
+                    'code' => $coupon->code,
+                    'type' => $coupon->type,
+                    'value' => $coupon->value,
+                    'cart_value' => $coupon->cart_value
+                ]);
+                // dd(Session::get('coupon')['value']);
+                $this->calculate_discount();
+                return redirect()->back()->with('success', 'Coupon has been applied');
+            } else {
+                return redirect()->back()->with('error', 'Invalid Coupon Code or Not found');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Coupon Code Not Set');
+        }
+    }
+
+    public function calculate_discount()
+    {
+        $discount = 0;
+        // if (Session::has('coupon')) {
+        //     if (Session::get('coupon')['type']=='fixed') {
+        //         $discount = Session::get('coupon')['value'];
+        //     }
+        //     else {
+        //         $total = str_replace( ',', '', Cart::instance('cart')->total());
+        //         $discount = $total * (Session::get('coupon')['value']/100);
+
+        //     }
+        //     $subtotal = str_replace( ',', '', Cart::instance('cart')->subtotal());
+        //     $taxAfterDiscount = ($total * config('cart.tax'))/100;
+        //     $totalAfterDiscount = $total - $taxAfterDiscount;
+        //     Session::put('discounts', [
+        //         'discount' => number_format(floatval(value: $discount),2,'.',''),
+        //         'subtotal' => number_format(floatval($subtotal),2,'.',''),
+        //         'tax' => number_format(floatval($taxAfterDiscount),2,'.',''),
+        //         'total' => number_format(floatval($totalAfterDiscount),2,'.','')
+        //     ]);
+        // }
+        if (Session::has('coupon')) {
+        }
+        if (Session::get('coupon')['type'] == 'fixed') {
+            $discount = Session::get('coupon')['value'];
+        } else {
+            $sub_total = str_replace(',', '', Cart::instance('cart')->subtotal());
+            $discount = $sub_total * (Session::get('coupon')['value'] / 100);
+        }
+        $subtotalAfterDiscount = $sub_total - $discount;
+        $taxAfterDiscount = ($subtotalAfterDiscount * config('cart.tax')) / 100;
+        $totalAfterDiscount = $subtotalAfterDiscount + $taxAfterDiscount;
+        // dd($totalAfterDiscount);
+        Session::put('discounts', [
+            'discount' => number_format(floatval(value: $discount), 2, '.', ''),
+            'subtotal' => number_format(floatval($subtotalAfterDiscount), 2, '.', ''),
+            'tax' => number_format(floatval($taxAfterDiscount), 2, '.', ''),
+            'total' => number_format(floatval($totalAfterDiscount), 2, '.', '')
+        ]);
+    }
 }

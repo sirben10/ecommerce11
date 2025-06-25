@@ -44,6 +44,9 @@ Route::delete('/wishlist/clear', [WishListController::class, 'empty_wishlist'])-
 // Move to Cart Route
 Route::post('/wishlist/move-to-cart/{rowId}', [WishListController::class, 'move_wishlist_to_cart'])->name('wishlist.move.to.cart');
 
+// Apply Coupon
+Route::post('/cart/apply-coupon', [CartController::class, 'apply_coupon_code'])->name('cart.coupon.apply');
+
 // Login Groups
 // User Login
 Route::middleware('auth')->group(function () {
