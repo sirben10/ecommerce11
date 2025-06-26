@@ -9,6 +9,8 @@ use App\Http\Controllers\WishListController;
 use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Surfsidemedia\Shoppingcart\Facades\Cart;
+
 // use App\Http\Controllers\Session;
 
 Auth::routes();
@@ -48,6 +50,10 @@ Route::delete('/wishlist/item/remove/{rowId}', [WishListController::class, 'remo
 Route::delete('/wishlist/clear', [WishListController::class, 'empty_wishlist'])->name('wishlist.items.clear');
 // Move to Cart Route
 Route::post('/wishlist/move-to-cart/{rowId}', [WishListController::class, 'move_wishlist_to_cart'])->name('wishlist.move.to.cart');
+
+// CHECKOUT ROUTE
+Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+
 
 // Login Groups
 // User Login
