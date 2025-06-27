@@ -51,8 +51,13 @@ Route::delete('/wishlist/clear', [WishListController::class, 'empty_wishlist'])-
 // Move to Cart Route
 Route::post('/wishlist/move-to-cart/{rowId}', [WishListController::class, 'move_wishlist_to_cart'])->name('wishlist.move.to.cart');
 
+
 // CHECKOUT ROUTE
 Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+// Place an Order Route
+Route::post('/place-an-order', [CartController::class, 'place_an_order'])->name('cart.place.an.order');
+// Order Confirmtion
+Route::get('/order-confirmation', [CartController::class, 'order_confirmation'])->name('cart.order.confirmation');
 
 
 // Login Groups

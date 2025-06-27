@@ -27,7 +27,8 @@
                     </span>
                 </a>
             </div>
-            <form name="checkout-form" action="">
+            <form name="checkout-form" action="{{ route('cart.place.an.order') }}" method="POST">
+                @csrf
                 <div class="checkout-form">
                     <div class="billing-info__wrapper">
                         <div class="row">
@@ -153,9 +154,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (Cart::instance('cart') as $item)
+                                        @foreach (Cart::instance('cart')->content() as $item)
                                             <tr>
                                                 <td>
+                                                    {{-- {{ dd($item->name.'---x---'.$item->qty) }} --}}
                                                     {{ $item->name }} x {{ $item->qty }}
                                                 </td>
                                                 <td class="text-right">
@@ -195,7 +197,7 @@
                                             </tr>
                                             <tr>
                                                 <th>Total</th>
-                                                <td class="text-right">${{ number_format(floatval(Session::get('discounts')['total'])) }}</td>
+                                                <td class="text-right">${{ number_format(floatval(Session::get(key: 'discounts')['total'])) }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -204,7 +206,7 @@
                                         <tbody>
                                             <tr>
                                                 <th>SUBTOTAL</th>
-                                                <td class="text-right">${{ Cart::instance('cart')->subtotal() }}</td>
+                                                <td class="text-right">${{Cart::instance('cart')->subtotal() }}</td>
                                             </tr>
                                             <tr>
                                                 <th>SHIPPING</th>
@@ -212,18 +214,18 @@
                                             </tr>
                                             <tr>
                                                 <th>VAT</th>
-                                                <td class="text-right">${{ Cart::instance('cart')->tax() }}</td>
+                                                <td class="text-right">${{Cart::instance('cart')->tax() }}</td>
                                             </tr>
                                             <tr>
                                                 <th>TOTAL</th>
-                                                <td class="text-right">${{ Cart::instance('cart')->total() }}</td>
+                                                <td class="text-right">${{Cart::instance('cart')->total() }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 @endif
                             </div>
                             <div class="checkout__payment-methods">
-                                <div class="form-check">
+                                {{-- <div class="form-check">
                                     <input class="form-check-input form-check-input_fill" type="radio"
                                         name="checkout_payment_method" id="checkout_payment_method_1" checked>
                                     <label class="form-check-label" for="checkout_payment_method_1">
@@ -235,47 +237,27 @@
                                             account.
                                         </p>
                                     </label>
-                                </div>
+                                </div> --}}
                                 <div class="form-check">
                                     <input class="form-check-input form-check-input_fill" type="radio"
-                                        name="checkout_payment_method" id="checkout_payment_method_2">
-                                    <label class="form-check-label" for="checkout_payment_method_2">
-                                        Check payments
-                                        <p class="option-detail">
-                                            Phasellus sed volutpat orci. Fusce eget lore mauris vehicula elementum gravida
-                                            nec dui. Aenean
-                                            aliquam varius ipsum, non ultricies tellus sodales eu. Donec dignissim viverra
-                                            nunc, ut aliquet
-                                            magna posuere eget.
-                                        </p>
+                                        name="mode" id="mode1" value="card">
+                                    <label class="form-check-label" for="mode1">
+                                        Debit or Credit Card
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input form-check-input_fill" type="radio"
-                                        name="checkout_payment_method" id="checkout_payment_method_3">
-                                    <label class="form-check-label" for="checkout_payment_method_3">
-                                        Cash on delivery
-                                        <p class="option-detail">
-                                            Phasellus sed volutpat orci. Fusce eget lore mauris vehicula elementum gravida
-                                            nec dui. Aenean
-                                            aliquam varius ipsum, non ultricies tellus sodales eu. Donec dignissim viverra
-                                            nunc, ut aliquet
-                                            magna posuere eget.
-                                        </p>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input form-check-input_fill" type="radio"
-                                        name="checkout_payment_method" id="checkout_payment_method_4">
-                                    <label class="form-check-label" for="checkout_payment_method_4">
+                                        name="mode" id="mode2" value="paypal">
+                                    <label class="form-check-label" for="mode2">
                                         Paypal
-                                        <p class="option-detail">
-                                            Phasellus sed volutpat orci. Fusce eget lore mauris vehicula elementum gravida
-                                            nec dui. Aenean
-                                            aliquam varius ipsum, non ultricies tellus sodales eu. Donec dignissim viverra
-                                            nunc, ut aliquet
-                                            magna posuere eget.
-                                        </p>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input form-check-input_fill" type="radio"
+                                        name="mode" id="mode3" value="cod">
+                                    <label class="form-check-label" for="mode3">
+                                        Cash on delivery
+                                        {{--   --}}
                                     </label>
                                 </div>
                                 <div class="policy-text">
