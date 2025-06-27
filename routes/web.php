@@ -122,5 +122,7 @@ Route::middleware(['auth', AuthAdmin::class])->group(function () {
     Route::put('/admin/coupon/update', [AdminController::class, 'update_coupon'])->name('admin.coupon.update');
     // Delete COUPON
     Route::delete('/admin/coupon/{id}/delete', [AdminController::class, 'delete_coupon'])->name('admin.coupon.delete');
+    // GET ALL ORDERS
+    Route::get('/admin/orders', [AdminController::class, 'show_orders'])->name('admin.orders');
 });
 // End Login Groups
