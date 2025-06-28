@@ -391,7 +391,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="swiper-slide">
                                                 <a
-                                                    href="{{ route('shop.product.details', ['product_details' => $product->slug]) }}"><img
+                                                    href="{{ route('shop.product.details', ['product_slug' => $product->slug]) }}"><img
                                                         loading="lazy"
                                                         src="{{ asset('uploads/products/') }}/{{ $product->image }}"
                                                         width="330" height="400" alt="{{ $product->nam }}"
@@ -400,7 +400,7 @@
                                             <div class="swiper-slide">
                                                 @foreach (explode(',', $product->images) as $gimg)
                                                     <a
-                                                        href="{{ route('shop.product.details', ['product_details' => $product->slug]) }}"><img
+                                                        href="{{ route('shop.product.details', ['product_slug' => $product->slug]) }}"><img
                                                             loading="lazy"
                                                             src="{{ asset('uploads/products') }}/{{ $gimg }}"
                                                             width="330" height="400" alt="{{ $product->name }}"
@@ -441,7 +441,7 @@
                                 <div class="pc__info position-relative">
                                     <p class="pc__category">{{ $product->category->name }}</p>
                                     <h6 class="pc__title"><a
-                                            href="{{ route('shop.product.details', ['product_details' => $product->slug]) }}">{{ $product->name }}</a>
+                                            href="{{ route('shop.product.details', ['product_slug' => $product->slug]) }}">{{ $product->name }}</a>
                                     </h6>
                                     <div class="product-card__price d-flex">
                                         <span class="money price">

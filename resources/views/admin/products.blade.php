@@ -65,7 +65,7 @@
                                                 alt="{{ $product->name }}" class="image">
                                         </div>
                                         <div class="name">
-                                            <a href="#" class="body-title-2">{{ $product->name }} </a>
+                                            <a href="{{ route('shop.product.details', ['product_slug' => $product->slug]) }}" class="body-title-2" target="_blank">{{ $product->name }} </a>
                                             <div class="text-tiny mt-3"> {{ $product->slug }}</div>
                                         </div>
                                     </td>
@@ -79,7 +79,7 @@
                                     <td>{{ $product->quantity }}</td>
                                     <td>
                                         <div class="list-icon-function">
-                                            <a href="#" target="_blank">
+                                            <a href="{{ route('shop.product.details', ['product_slug' => $product->slug]) }}" target="_blank">
                                                 <div class="item eye">
                                                     <i class="icon-eye"></i>
                                                 </div>

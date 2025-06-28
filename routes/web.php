@@ -21,7 +21,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 
 // Product detail Route
-Route::get('/shop/{product_details}', [ShopController::class, 'product_details'])->name('shop.product.details');
+Route::get('/shop/{product_slug}', [ShopController::class, 'product_details'])->name('shop.product.details');
 
 // Shopping Cart Route
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -124,5 +124,7 @@ Route::middleware(['auth', AuthAdmin::class])->group(function () {
     Route::delete('/admin/coupon/{id}/delete', [AdminController::class, 'delete_coupon'])->name('admin.coupon.delete');
     // GET ALL ORDERS
     Route::get('/admin/orders', [AdminController::class, 'show_orders'])->name('admin.orders');
+    // SHOW ORDER DETAILS
+    Route::get('/admin/order/{order_id}/details', [AdminController::class, 'order_details'])->name('admin.order.details');
 });
 // End Login Groups
