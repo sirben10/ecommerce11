@@ -63,7 +63,12 @@ Route::get('/order-confirmation', [CartController::class, 'order_confirmation'])
 // Login Groups
 // User Login
 Route::middleware('auth')->group(function () {
+    // Index Route
     Route::get('/acount-dashboard', [UserController::class, 'index'])->name('user.index');
+    // Order Route
+    Route::get('/account-orders', [UserController::class, 'orders'])->name('user.orders');
+    // Order Details Route
+    Route::get('/account-order/{order_id}/details', [UserController::class, 'order_details'])->name('user.order.details');
 });
 
 // Admin Login and rights
