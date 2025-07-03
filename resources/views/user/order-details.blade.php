@@ -2,7 +2,11 @@
 
 @section('content')
     <style>
-        .table> :not(caption)>tr>th {
+         .table> tr>th {
+            padding: 0.625rem 1.5rem .625rem !important;
+            background-color: #6a6e51 !important;
+        }
+         .table> :not(caption)>tr>th {
             padding: 0.625rem 1.5rem .625rem !important;
             background-color: #6a6e51 !important;
         }
@@ -211,6 +215,14 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class="wg-box mt-5">
+                         <form action="{{ route('admin.order.status.update') }}" method="post">
+                            @csrf
+                            @method('put')
+                            <input type="hidden" name="order_id" value="{{ $order->id }}">
+                            <button type="submit" class="btn btn-primary tf-button ">Cancel Order</button>
+                        </form>
                     </div>
                 </div>
 
