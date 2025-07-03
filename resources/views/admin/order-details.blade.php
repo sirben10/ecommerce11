@@ -56,8 +56,9 @@
                                     <span class="badge bg-success">Delivered</span>
                                 @elseif($order->status == 'cancelled')
                                     <span class="badge bg-danger">Cancelled</span>
+                                @else
+                                    <span class="badge bg-warning">Ordered</span>
                                 @endif
-                                <span class="badge bg-warning">Ordered</span>
                             </td>
                         </thead>
 
@@ -185,6 +186,29 @@
                     </table>
                 </div>
             </div>
+
+               <div class="wg-box mt-5">
+                        <h5>Update Order Status</h5>
+                        <form action="{{ route('admin.order.status.update') }}" method="post">
+                            @csrf
+                            @method('put')
+                            <input type="hidden" name="order_id" value="{{ $order->id }}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="select">
+                                        <select name="order_status" id="order_status">
+                                            <option value="ordered" {{ $order->status =='ordered' ? "selected":"" }}>Ordered</option>
+                                            <option value="delivered" {{ $order->status =='delivered' ? "selected":"" }}>Delivered</option>
+                                            <option value="cancelled" {{ $order->status =='ordered' ? "cancelled":"" }}>Cancelled</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary tf-button ">Update Status</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
         </div>
     </div>
 @endsection

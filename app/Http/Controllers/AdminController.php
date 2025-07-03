@@ -478,13 +478,13 @@ class AdminController extends Controller
         }
 
         foreach (explode(',', $product->images) as $oldfile) {
-                if (File::exists(public_path('uploads/products') . '/' . $oldfile)) {
-                    File::delete(public_path('uploads/products') . '/' . $oldfile);
-                }
-                if (File::exists(public_path('uploads/products/thumbnails') . '/' . $oldfile)) {
-                    File::delete(public_path('uploads/products/thumbnails') . '/' . $oldfile);
-                }
+            if (File::exists(public_path('uploads/products') . '/' . $oldfile)) {
+                File::delete(public_path('uploads/products') . '/' . $oldfile);
             }
+            if (File::exists(public_path('uploads/products/thumbnails') . '/' . $oldfile)) {
+                File::delete(public_path('uploads/products/thumbnails') . '/' . $oldfile);
+            }
+        }
         $product->delete();
         return redirect()->route('admin.products')->with('status', 'Products has been Deleted successfully');
     }
@@ -511,11 +511,11 @@ class AdminController extends Controller
             'expiry_date' => 'required|date'
         ]);
         $coupon = new Coupon();
-        $coupon ->code =  $request->code;
-        $coupon ->type =  $request->type;
-        $coupon ->value =  $request->value;
-        $coupon ->cart_value =  $request->cart_value;
-        $coupon ->expiry_date =  $request->expiry_date;
+        $coupon->code =  $request->code;
+        $coupon->type =  $request->type;
+        $coupon->value =  $request->value;
+        $coupon->cart_value =  $request->cart_value;
+        $coupon->expiry_date =  $request->expiry_date;
         $coupon->save();
 
 
@@ -530,7 +530,7 @@ class AdminController extends Controller
 
     public function update_coupon(Request $request)
     {
-         $request->validate([
+        $request->validate([
             'code' => 'required',
             'type' => 'required',
             'value' => 'required | numeric',
@@ -538,15 +538,14 @@ class AdminController extends Controller
             'expiry_date' => 'required | date'
         ]);
         $coupon = Coupon::find($request->id);
-        $coupon ->code =  $request->code;
-        $coupon ->type =  $request->type;
-        $coupon ->value =  $request->value;
-        $coupon ->cart_value =  $request->cart_value;
-        $coupon ->expiry_date =  $request->expiry_date;
+        $coupon->code =  $request->code;
+        $coupon->type =  $request->type;
+        $coupon->value =  $request->value;
+        $coupon->cart_value =  $request->cart_value;
+        $coupon->expiry_date =  $request->expiry_date;
         $coupon->save();
 
         return redirect()->route('admin.coupons')->with('status', 'Coupon has been updated successfully!');
-
     }
 
     public function delete_coupon($id)
@@ -555,12 +554,12 @@ class AdminController extends Controller
         $coupon->delete();
         return redirect()->route('admin.coupons')->with('status', 'Coupon has been deleted successfully!');
     }
-// SHOW ORDERS IN ADMIN
+    // SHOW ORDERS IN ADMIN
     public function show_orders()
     {
         $orders = Order::orderBy('created_at', 'DESC')->paginate(12);
 
-        return view('admin.orders', compact('orders')) ;
+        return view('admin.orders', compact('orders'));
     }
 
     // Order Details
@@ -570,5 +569,38 @@ class AdminController extends Controller
         $orderItems = OrderItem::where('order_id', $order_id)->orderBy('id')->paginate(12);
         $transaction = Transaction::where('order_id', $order_id)->first();
         return view('admin.order-details', compact('order', 'orderItems', 'transaction'));
+    }
+
+    // Order Status
+    public function update_order_status(Request $request)
+    {
+        $order = Order::find($request->order_id);
+        $order->status = $request->order_status;
+        if ($request->order_status == 'delivered') {
+            $order->delivered_date = Carbon::now();
+        } elseif ($request->order_status == 'cancelled') {
+            $order->cancelled_date = Carbon::now();
+        }
+        $order->save();
+
+        if ($request->order_status == 'delivered')
+        {
+            $transaction = Transaction::where('order_id', $request->order_id)->first();
+            $transaction->status = 'approved';
+            $transaction->save();
+        }
+        elseif ($request->order_status == 'cancelled')
+        {
+            $transaction = Transaction::where('order_id', $request->order_id)->first();
+            $transaction->status = 'Declined';
+            $transaction->save();
+        }
+        else{
+            $transaction = Transaction::where('order_id', $request->order_id)->first();
+            $transaction->status = 'Pending';
+            $transaction->save();
+
+        }
+        return back()->with('status', 'Status changed successfully!');
     }
 }
