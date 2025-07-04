@@ -57,6 +57,9 @@
                             <a class="tf-button style-1 w208" href="{{ route('admin.orders') }}">Back</a>
                         </div>
                         <div class="table-responsive">
+                             @if (Session::has('status'))
+                                    <p class="alert alert-success">{{ Session::get('status') }}</p>
+                                @endif
                             <table class="table table-bordered table-striped table-transaction">
                                 <thead>
                                     <tr>
@@ -82,8 +85,9 @@
                                                 <span class="badge bg-success">Delivered</span>
                                             @elseif($order->status == 'cancelled')
                                                 <span class="badge bg-danger">Cancelled</span>
+                                            @else
+                                                <span class="badge bg-warning">Ordered</span>
                                             @endif
-                                            <span class="badge bg-warning">Ordered</span>
                                         </td>
                                     </tr>
                                 </thead>
@@ -100,9 +104,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            @if(Session::has('status'))
-                                <p class="alert alert-success">{{ Session::get('status') }}</p>
-                             @endif
+
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
@@ -200,6 +202,7 @@
                                         <td>{{ $transaction->mode }}</td>
                                         <th>Status</th>
                                         <td>
+                                            {{-- {{ dd($transaction->status) }} --}}
                                             @if ($transaction->status == 'approved')
                                                 <span class="badge bg-success">Approved</span>
                                             @elseif($transaction->status == 'declined')
@@ -216,17 +219,41 @@
                             </table>
                         </div>
                     </div>
+                    @if ($order->status == 'ordered')
                     <div class="wg-box mt-5">
-                         <form action="{{ route('admin.order.status.update') }}" method="post">
+                         <form action="{{ route('user.order.cancel') }}" method="post">
                             @csrf
                             @method('put')
                             <input type="hidden" name="order_id" value="{{ $order->id }}">
-                            <button type="submit" class="btn btn-primary tf-button ">Cancel Order</button>
+                            <button type="button" class="btn btn-primary tf-button cancel-order">Cancel Order</button>
                         </form>
                     </div>
+                    @endif
                 </div>
 
             </div>
         </section>
     </main>
 @endsection
+
+ @push('scripts')
+     <script>
+         $(function() {
+             $('.cancel-order').on('click', function(e) {
+                 e.preventDefault();
+                 var form = $(this).closest('form');
+                 swal({
+                     title: "Are you sure?",
+                     text: "You want to cancel this Order",
+                     type: "warning",
+                     buttons: ["No", "Yes"],
+                     ConfirmButtonColor: "#dc3545",
+                 }).then(function(result) {
+                     if (result) {
+                         form.submit();
+                     }
+                 });
+             });
+         });
+     </script>
+ @endpush

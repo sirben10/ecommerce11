@@ -69,6 +69,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/account-orders', [UserController::class, 'orders'])->name('user.orders');
     // Order Details Route
     Route::get('/account-order/{order_id}/details', [UserController::class, 'order_details'])->name('user.order.details');
+    // Cancel Order Route
+    Route::put('/account-order/cancel-order', [UserController::class, 'order_cancel'])->name('user.order.cancel');
 });
 
 // Admin Login and rights
