@@ -32,6 +32,7 @@
                 <form class="form-new-product form-style-1" action="{{ route('admin.slide.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="id" value="{{ $slide->id }}">
                     <fieldset class="tagline">
                         <div class="body-title">Tagline <span class="tf-color-1">*</span></div>
                         <input class="flex-grow" type="text" placeholder="Tagline" name="tagline" tabindex="0"
