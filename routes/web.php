@@ -135,5 +135,16 @@ Route::middleware(['auth', AuthAdmin::class])->group(function () {
     Route::get('/admin/order/{order_id}/details', [AdminController::class, 'order_details'])->name('admin.order.details');
     // Update Status
     Route::put('/admin/order/update-status', [AdminController::class, 'update_order_status'])->name('admin.order.status.update');
+
+    // Slides Route
+    Route::get('admin/slides', [AdminController::class, 'slides'])->name('admin.slides');
+    // Add Slide Page Route
+    Route::get('admin/slide/add', [AdminController::class, 'add_slide'])->name('admin.slide.add');
+    // Store Slide Route
+    Route::post('admin/slide/store', [AdminController::class, 'store_slide'])->name('admin.slide.store');
+    // Edit Slide Route
+    Route::get('admin/slide/{id}/edit', [AdminController::class, 'edit_slide'])->name('admin.slide.edit');
+    // update Slide Route
+    Route::put('admin/slide/update', [AdminController::class, 'update_slide'])->name('admin.slide.update');
 });
 // End Login Groups
