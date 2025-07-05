@@ -684,7 +684,8 @@ class AdminController extends Controller
 
         if($request->hasFile('image'))
         {
-            if (File::exists(public_path('uploads/slides') . '/' . $slide->image)) {
+            if (File::exists(public_path('uploads/slides') . '/' . $slide->image))
+            {
                 File::delete(public_path('uploads/slides') . '/' . $slide->image);
             }
         $image = $request->file('image');
@@ -696,5 +697,17 @@ class AdminController extends Controller
         $slide->save();
 
         return redirect()->route('admin.slides')->with('status', 'Slides updated Successfully');
+    }
+
+    // Delete Slides
+       public function delete_slide($id)
+    {
+        $slide = Slide::find($id);
+         if (File::exists(public_path('uploads/slides') . '/' . $slide->image))
+            {
+                File::delete(public_path('uploads/slides') . '/' . $slide->image);
+            }
+        $slide->delete();
+        return redirect()->route('admin.slides')->with('status', 'Slide has been deleted successfully!');
     }
 }

@@ -146,5 +146,7 @@ Route::middleware(['auth', AuthAdmin::class])->group(function () {
     Route::get('admin/slide/{id}/edit', [AdminController::class, 'edit_slide'])->name('admin.slide.edit');
     // update Slide Route
     Route::put('admin/slide/update', [AdminController::class, 'update_slide'])->name('admin.slide.update');
+    // Delete Slide Route
+    Route::delete('admin/slide/{id}/delete', [AdminController::class, 'delete_slide'])->name('admin.slide.delete');
 });
 // End Login Groups
