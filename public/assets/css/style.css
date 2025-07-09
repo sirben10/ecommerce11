@@ -128,10 +128,10 @@ h1, .h1 {
       font-size: 4.375rem; } }
 
 h2, .h2 {
-  font-size: calc(1.3rem + 0.6vw); }
+  font-size: calc(1.3rem + 2.6vw); }
   @media (min-width: 1200px) {
     h2, .h2 {
-      font-size: 1.75rem; } }
+      font-size: 2.75rem; } }
 
 h3, .h3 {
   font-size: calc(1.2875rem + 0.45vw); }
@@ -6050,7 +6050,7 @@ progress {
  *
  * bootstrap-slider is released under the MIT License
  * Copyright (c) 2019 Kyle Kemp, Rohit Kalkur, and contributors
- * 
+ *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
  * files (the "Software"), to deal in the Software without
@@ -6059,10 +6059,10 @@ progress {
  * copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following
  * conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -6576,10 +6576,10 @@ body {
     height: 100% !important; } }
 
 .pos_right-center {
-  left: 50%; }
+  left: 35%; }
   @media (min-width: 992px) {
     .pos_right-center {
-      left: 60%; } }
+      left: 40%; } }
 
 .scrollbar-gray ::-webkit-scrollbar {
   margin-right: 1.25rem;
@@ -12873,13 +12873,15 @@ textarea.form-control-lg {
 
 .slideshow-bg__img {
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  position: absolute;
+}
 
 .slideshow-character__img {
   max-height: 555px; }
   @media (min-width: 992px) {
     .slideshow-character__img {
-      max-height: 733px; } }
+      max-height: 780px; } }
   .slideshow_small .slideshow-character__img {
     max-height: 20rem; }
     @media (min-width: 992px) {
