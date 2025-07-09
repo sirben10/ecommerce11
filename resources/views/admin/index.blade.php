@@ -15,7 +15,7 @@
                                      </div>
                                      <div>
                                          <div class="body-text mb-2">Total Orders</div>
-                                         <h4>3</h4>
+                                         <h4>{{ number_format(floatval($dashboardData[0]->Total)) }}</h4>
                                      </div>
                                  </div>
                              </div>
@@ -30,7 +30,7 @@
                                      </div>
                                      <div>
                                          <div class="body-text mb-2">Total Amount</div>
-                                         <h4>481.34</h4>
+                                         <h4>{{ number_format(floatval($dashboardData[0]->TotalAmount)) }}</h4>
                                      </div>
                                  </div>
                              </div>
@@ -45,7 +45,7 @@
                                      </div>
                                      <div>
                                          <div class="body-text mb-2">Pending Orders</div>
-                                         <h4>3</h4>
+                                         <h4>{{ number_format(floatval($dashboardData[0]->TotalOrder)) }}</h4>
                                      </div>
                                  </div>
                              </div>
@@ -60,7 +60,7 @@
                                      </div>
                                      <div>
                                          <div class="body-text mb-2">Pending Orders Amount</div>
-                                         <h4>481.34</h4>
+                                         <h4>{{ number_format(floatval($dashboardData[0]->TotalOrderAmount)) }}</h4>
                                      </div>
                                  </div>
                              </div>
@@ -78,7 +78,7 @@
                                      </div>
                                      <div>
                                          <div class="body-text mb-2">Delivered Orders</div>
-                                         <h4>0</h4>
+                                         <h4>{{ number_format(floatval($dashboardData[0]->TotalDelivered)) }}</h4>
                                      </div>
                                  </div>
                              </div>
@@ -93,7 +93,7 @@
                                      </div>
                                      <div>
                                          <div class="body-text mb-2">Delivered Orders Amount</div>
-                                         <h4>0.00</h4>
+                                         <h4>{{ number_format(floatval($dashboardData[0]->TotalDeliveredAmount)) }}</h4>
                                      </div>
                                  </div>
                              </div>
@@ -108,7 +108,7 @@
                                      </div>
                                      <div>
                                          <div class="body-text mb-2">Canceled Orders</div>
-                                         <h4>0</h4>
+                                         <h4>{{ number_format(floatval($dashboardData[0]->TotalCancelled)) }}</h4>
                                      </div>
                                  </div>
                              </div>
@@ -123,7 +123,7 @@
                                      </div>
                                      <div>
                                          <div class="body-text mb-2">Canceled Orders Amount</div>
-                                         <h4>0.00</h4>
+                                         <h4>{{ number_format(floatval($dashboardData[0]->TotalCancelledAmount)) }}</h4>
                                      </div>
                                  </div>
                              </div>
@@ -193,7 +193,7 @@
                      <div class="flex items-center justify-between">
                          <h5>Recent orders</h5>
                          <div class="dropdown default">
-                             <a class="btn btn-secondary dropdown-toggle" href="#">
+                             <a class="btn btn-secondary dropdown-toggle" href="{{ route('admin.orders') }}">
                                  <span class="view-all">View all</span>
                              </a>
                          </div>
@@ -225,7 +225,7 @@
                                         <td class="text-center">{{ $order->phone }}</td>
                                         <td class="text-center">${{ $order->subtotal }}</td>
                                         <td class="text-center">${{ $order->tax }}</td>
-                                        <td class="text-center">${{ $order->total }}</td>
+                                        <td class="text-center">${{ $order->Total }}</td>
 
                                         <td class="text-center">
                                               @if ($order->status == 'delivered')

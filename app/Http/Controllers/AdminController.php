@@ -12,6 +12,7 @@ use App\Models\Slide;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
@@ -20,9 +21,20 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $orders = Order::orderBy('created_at', 'DESC')->paginate(12);
+        $orders = Order::orderBy('created_at', 'DESC')->paginate(10);
+        $dashboardData = DB::select("select sum(total) as TotalAmount,
+                                    sum(if(status='ordered',total,0)) as TotalOrderAmount,
+                                    sum(if(status='delivered',total,0)) as TotalDeliveredAmount,
+                                    sum(if(status='cancelled',total,0)) as TotalCancelledAmount,
+                                    Count(*) as Total,
+                                    sum(if(status='ordered',1,0)) as TotalOrder,
+                                    sum(if(status='delivered',1,0)) as TotalDelivered,
+                                    sum(if(status='cancelled',1,0)) as TotalCancelled
+                                    from Orders
+        ");
+        
 
-        return view('admin.index', compact('orders'));
+        return view('admin.index', compact('orders', 'dashboardData'));
     }
 
     // All brands Layout
