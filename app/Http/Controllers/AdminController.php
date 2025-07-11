@@ -32,9 +32,30 @@ class AdminController extends Controller
                                     sum(if(status='cancelled',1,0)) as TotalCancelled
                                     from Orders
         ");
-        
+        $monthlyData = DB::select("SELECT m.id  as monthNo, m.name as monthName,
+                        ifnull(d.TotalAmount,0) as TotalAmount,
+                        ifnull(d.TotalOrderAmount,0) as TotalOrderAmount,
+                        ifnull(d.TotalDeliveredAmount,0) as TotalDeliveredAmount,
+                        ifnull(d.TotalCancelledAmount,0) as TotalCancelledAmount from month_names m
+                        LEFT JOIN (SELECT date_format(created_at,'%b') as monthName,
+                        MONTH(created_at) as monthNo,
+                        sum(total) as TotalAmount,
+                        sum(if(status='ordered',total,0)) as TotalOrderAmount,
+                        sum(if(status='delivered',total,0)) as TotalDeliveredAmount,
+                        sum(if(status='cancelled',total,0)) as TotalCancelledAmount
+                        from Orders where year(created_at)=year(now()) group by year(created_at), month(created_at), date_format(created_at, '%b')
+                        order by month(created_at)) d on d.monthNo = m.id");
+        // echo( $monthlyData);
+        $amountM = implode(',', collect($monthlyData)->pluck('TotalAmount')->toArray());
+        $orderAmount = implode(',', collect($monthlyData)->pluck('TotalOrderAmount')->toArray());
+        $DeliveredAmount = implode(',', collect($monthlyData)->pluck('TotalDeliveredAmount')->toArray());
+        $CancelledAmount = implode(',', collect($monthlyData)->pluck('TotalCancelledAmount')->toArray());
 
-        return view('admin.index', compact('orders', 'dashboardData'));
+        $TotalAmount = collect($monthlyData)->sum('TotalAmount');
+        $TotalOrderAmount = collect($monthlyData)->sum('TotalOrderAmount');
+        $TotalDeliveredAmount = collect($monthlyData)->sum('TotalDeliveredAmount');
+        $TotalCancelledAmount = collect($monthlyData)->sum('TotalCancelledAmount');
+        return view('admin.index', compact('orders', 'dashboardData', 'amountM', 'orderAmount', 'DeliveredAmount', 'CancelledAmount', 'TotalAmount', 'TotalOrderAmount', 'TotalDeliveredAmount', 'TotalCancelledAmount'));
     }
 
     // All brands Layout
