@@ -60,6 +60,14 @@ Route::post('/place-an-order', [CartController::class, 'place_an_order'])->name(
 Route::get('/order-confirmation', [CartController::class, 'order_confirmation'])->name('cart.order.confirmation');
 
 
+// Contact Page Route
+Route::get('/contact-us', [HomeController::class, 'contact'])->name('home.contact');
+// Contact Store Route
+Route::post('/contact/store', [HomeController::class, 'contact_store'])->name('home.contact.store');
+
+
+
+
 // Login Groups
 // User Login
 Route::middleware('auth')->group(function () {
