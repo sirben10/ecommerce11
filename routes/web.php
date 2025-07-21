@@ -156,5 +156,10 @@ Route::middleware(['auth', AuthAdmin::class])->group(function () {
     Route::put('admin/slide/update', [AdminController::class, 'update_slide'])->name('admin.slide.update');
     // Delete Slide Route
     Route::delete('admin/slide/{id}/delete', [AdminController::class, 'delete_slide'])->name('admin.slide.delete');
+
+    // Contacts Route
+    Route::get('admin/contacts', [AdminController::class, 'contacts'])->name('admin.contacts');
+    // Delete Contact Route
+    Route::delete('admin/contact/{id}/delete', [AdminController::class, 'delete_contact'])->name('admin.contact.delete');
 });
 // End Login Groups
